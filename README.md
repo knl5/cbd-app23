@@ -1,6 +1,7 @@
 # my_app
 
-A new Flutter project.
+School project to validate my degree. Creation of a mobile application with Flutter and Firebase.
+This an app to inform but above all generalize, popularized CBD (cannabidiol) and its consumption.
 
 ## Getting Started
 
