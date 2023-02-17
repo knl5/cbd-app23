@@ -4,9 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-
-
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -56,7 +53,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '618334712369',
     projectId: 'my-cbd-app',
     storageBucket: 'my-cbd-app.appspot.com',
-    iosClientId: '618334712369-5smjgj1bg4462itjo0mctt4v9hd8pcmb.apps.googleusercontent.com',
+    iosClientId:
+        '618334712369-5smjgj1bg4462itjo0mctt4v9hd8pcmb.apps.googleusercontent.com',
     iosBundleId: 'com.example.myApp',
   );
 }

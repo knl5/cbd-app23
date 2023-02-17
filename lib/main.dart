@@ -111,7 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                     title: Text(snapshot.data![index].strain),
-                    subtitle: Text(snapshot.data![index].strainType),
+                    subtitle: Text([
+                      snapshot.data![index].strainType,
+                      snapshot.data![index].goodEffects
+                    ].join(' | ')),
+                    textColor: Colors.black,
+                    isThreeLine: false,
                     leading: Image(
                         image: NetworkImage(snapshot.data![index].imgThumb)));
               });
@@ -200,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.favorite),
             label: 'Search',
           ),
           BottomNavigationBarItem(
