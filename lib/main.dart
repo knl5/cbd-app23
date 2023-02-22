@@ -3,6 +3,8 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'api_data.dart';
+import 'fetch_data.dart';
 import 'firebase_options.dart';
 import 'auth_gate.dart';
 
@@ -65,6 +67,31 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
+    FutureBuilder<List<Data>>(
+      future: fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                    title: Text(snapshot.data![index].strain),
+                    subtitle: Text([
+                      snapshot.data![index].strainType,
+                      snapshot.data![index].goodEffects
+                    ].join(' | ')),
+                    textColor: Colors.black,
+                    isThreeLine: false,
+                    leading: Image(
+                        image: NetworkImage(snapshot.data![index].imgThumb)));
+              });
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        // By default show a loading spinner.
+        return const CircularProgressIndicator();
+      },
+    ),
     Container(
       height: 200.0,
       color: Colors.grey,
@@ -100,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     ),
-    ListView.builder(
+    /* ListView.builder(
         itemCount: 100,
         itemBuilder: (context, index) {
           return Card(
@@ -108,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("Item: ${index + 1}"),
             ),
           );
-        }),
+        }), */
     SwitchApp(),
   ];
 
@@ -178,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.favorite),
             label: 'Search',
           ),
           BottomNavigationBarItem(
