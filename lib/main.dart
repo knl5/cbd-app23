@@ -67,6 +67,31 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
+    FutureBuilder<List<Data>>(
+      future: fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                    title: Text(snapshot.data![index].strain),
+                    subtitle: Text([
+                      snapshot.data![index].strainType,
+                      snapshot.data![index].goodEffects
+                    ].join(' | ')),
+                    textColor: Colors.black,
+                    isThreeLine: false,
+                    leading: Image(
+                        image: NetworkImage(snapshot.data![index].imgThumb)));
+              });
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        // By default show a loading spinner.
+        return const CircularProgressIndicator();
+      },
+    ),
     Container(
       height: 200.0,
       color: Colors.grey,
@@ -101,31 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-    ),
-    FutureBuilder<List<Data>>(
-      future: fetchData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    title: Text(snapshot.data![index].strain),
-                    subtitle: Text([
-                      snapshot.data![index].strainType,
-                      snapshot.data![index].goodEffects
-                    ].join(' | ')),
-                    textColor: Colors.black,
-                    isThreeLine: false,
-                    leading: Image(
-                        image: NetworkImage(snapshot.data![index].imgThumb)));
-              });
-        } else if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-        // By default show a loading spinner.
-        return const CircularProgressIndicator();
-      },
     ),
     /* ListView.builder(
         itemCount: 100,
@@ -205,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.search),
             label: 'Search',
           ),
           BottomNavigationBarItem(
