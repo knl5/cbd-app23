@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_app/details_strain.dart';
 import 'api_data.dart';
 import 'fetch_data.dart';
 import 'firebase_options.dart';
@@ -127,6 +127,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     ),
+    Container(
+      child: ProfileScreen(
+        appBar: AppBar(
+          title: Text(
+            'User Profile',
+            style: GoogleFonts.comfortaa(),
+          ),
+        ),
+        actions: [
+          SignedOutAction((context) {
+            Navigator.of(context).pop();
+          })
+        ],
+      ),
+    ),
     /* ListView.builder(
         itemCount: 100,
         itemBuilder: (context, index) {
@@ -136,20 +151,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         }), */
-    SwitchApp(),
+    /* SwitchApp(), */
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  Future<void> _launchUrl(String passedUrl) async {
-    final Uri url = Uri.parse(passedUrl);
-    if (!await launchUrl(url)) {
-      throw 'Could not launch $url';
-    }
   }
 
   @override
@@ -162,30 +170,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<ProfileScreen>(
-                  builder: (context) => ProfileScreen(
-                    appBar: AppBar(
-                      title: Text(
-                        'User Profile',
-                        style: GoogleFonts.comfortaa(),
-                      ),
-                    ),
-                    actions: [
-                      SignedOutAction((context) {
-                        Navigator.of(context).pop();
-                      })
-                    ],
-                  ),
-                ),
-              );
-            },
-          )
+              onPressed: () {
+                showSearch(context: context, delegate: MySearchDelegate());
+              },
+              icon: const Icon(Icons.search))
         ],
         automaticallyImplyLeading: false,
         // Here we take the value from the MyHomePage object that was created by
@@ -209,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.person),
             label: 'Profil',
           ),
         ],
@@ -221,43 +211,72 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class SwitchApp extends StatelessWidget {
-  const SwitchApp({super.key});
+class MySearchDelegate extends SearchDelegate {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      )
+    ];
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Switch')),
-        body: const Center(
-          child: SwitchExample(),
-        ),
-      ),
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
     );
   }
-}
-
-class SwitchExample extends StatefulWidget {
-  const SwitchExample({super.key});
 
   @override
-  State<SwitchExample> createState() => _SwitchExampleState();
-}
-
-class _SwitchExampleState extends State<SwitchExample> {
-  bool light = true;
+  Widget buildResults(BuildContext context) {
+    // TODO: Implement search results page
+    return Container();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Switch(
-      // This bool value toggles the switch.
-      value: light,
-      activeColor: Colors.red,
-      onChanged: (bool value) {
-        // This is called when the user toggles the switch.
-        setState(() {
-          light = value;
-        });
+  Widget buildSuggestions(BuildContext context) {
+    return FutureBuilder<List<Data>>(
+      future: fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<Data> data = snapshot.data!;
+          final List<Data> suggestionList = query.isEmpty
+              ? data
+              : data
+                  .where((d) =>
+                      d.strain.toLowerCase().contains(query.toLowerCase()))
+                  .toList();
+          return ListView.builder(
+            itemCount: suggestionList.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DetailsStrain(data: suggestionList[index]),
+                    ),
+                  );
+                },
+                child: ListTile(
+                  title: Text(suggestionList[index].strain),
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return CircularProgressIndicator();
       },
     );
   }
