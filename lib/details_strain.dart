@@ -20,10 +20,39 @@ class _DetailsStrainState extends State<DetailsStrain> {
           style: GoogleFonts.comfortaa(),
         ),
       ),
-      body: Container(
-        width: 160.0,
-        height: 200,
-        child: Text(widget.data.strain),
+      body: Column(
+        children: [
+          Stack(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(60),
+                  bottomRight: Radius.circular(60),
+                ),
+                child: Image(image: NetworkImage(widget.data.imgThumb)),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 30,
+                    right: 20,
+                    top: 5,
+                    bottom: 5,
+                  ),
+                  child: Text(
+                      [widget.data.strain, widget.data.strainType].join('  ')),
+                ),
+              ),
+            ],
+          ),
+          ListTile(
+            title: Text('Good Effects'),
+            subtitle: Text(widget.data.goodEffects),
+          ),
+        ],
       ),
     );
   }
