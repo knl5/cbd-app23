@@ -196,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            label: 'Search',
+            label: 'Menu2',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -216,7 +216,7 @@ class MySearchDelegate extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -227,7 +227,7 @@ class MySearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -236,7 +236,6 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: Implement search results page
     return Container();
   }
 
@@ -276,7 +275,7 @@ class MySearchDelegate extends SearchDelegate {
           return Text('${snapshot.error}');
         }
 
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
     );
   }

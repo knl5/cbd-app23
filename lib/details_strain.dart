@@ -36,7 +36,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 30,
                     right: 20,
                     top: 5,
@@ -49,7 +49,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
             ],
           ),
           ListTile(
-            title: Text('Good Effects'),
+            title: const Text('Good Effects'),
             subtitle: Text(widget.data.goodEffects),
           ),
         ],
