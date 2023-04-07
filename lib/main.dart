@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/details_strain.dart';
-import 'api_data.dart';
-import 'fetch_data.dart';
+import 'package:my_app/strains/details_strain.dart';
+import 'package:my_app/strains/favorites_strains.dart';
+import 'data/api_data.dart';
+import 'data/fetch_data.dart';
 import 'firebase_options.dart';
-import 'auth_gate.dart';
+import 'authentification/auth_gate.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Marijane CBD App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: GoogleFonts.comfortaaTextTheme(),
         brightness: Brightness.light,
         primaryColor: Colors.black,
         primarySwatch: Colors.deepPurple,
@@ -67,23 +69,36 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    FutureBuilder<List<Data>>(
+    FutureBuilder<List<DataStrains>>(
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
+              scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    title: Text(snapshot.data![index].strain),
-                    subtitle: Text([
-                      snapshot.data![index].strainType,
-                      snapshot.data![index].goodEffects
-                    ].join(' | ')),
-                    textColor: Colors.black,
-                    isThreeLine: false,
-                    leading: Image(
-                        image: NetworkImage(snapshot.data![index].imgThumb)));
+                return SizedBox(
+                    height: 100,
+                    width: 300,
+                    child: Card(
+                        child: ListTile(
+                            title: Text(snapshot.data![index].strain),
+                            subtitle: Text([
+                              snapshot.data![index].strainType,
+                              snapshot.data![index].goodEffects
+                            ].join(' | ')),
+                            textColor: Colors.black,
+                            isThreeLine: false,
+                            leading: Image(
+                                image: NetworkImage(
+                                    snapshot.data![index].imgThumb ?? 'None')),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailsStrain(
+                                          data: snapshot.data![index])));
+                            })));
               });
         } else if (snapshot.hasError) {
           return Text(snapshot.error.toString());
@@ -93,48 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ),
     Container(
-      height: 200.0,
-      color: Colors.grey,
-      child: ListView(
-        // This next line does the trick.
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          Container(
-            width: 160.0,
-            height: 200,
-            color: Colors.red,
-          ),
-          Container(
-            width: 160.0,
-            height: 200,
-            color: Colors.blue,
-          ),
-          Container(
-            width: 160.0,
-            height: 200,
-            color: Colors.green,
-          ),
-          Container(
-            width: 160.0,
-            height: 200,
-            color: Colors.yellow,
-          ),
-          Container(
-            width: 160.0,
-            height: 200,
-            color: Colors.orange,
-          ),
-        ],
-      ),
-    ),
-    Container(
       child: ProfileScreen(
-        appBar: AppBar(
-          title: Text(
-            'User Profile',
-            style: GoogleFonts.comfortaa(),
-          ),
-        ),
         actions: [
           SignedOutAction((context) {
             Navigator.of(context).pop();
@@ -142,16 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     ),
-    /* ListView.builder(
-        itemCount: 100,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text("Item: ${index + 1}"),
-            ),
-          );
-        }), */
-    /* SwitchApp(), */
+    //const BottomSheetFilter(),
+    const FavoritesPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -195,17 +161,77 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Menu2',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'My Favorites',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class BottomSheetApp extends StatelessWidget {
+  const BottomSheetApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xff6750a4),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Filter BottomSheet')),
+        body: const BottomSheetFilter(),
+      ),
+    );
+  }
+}
+
+class BottomSheetFilter extends StatelessWidget {
+  const BottomSheetFilter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: const Alignment(0.8, 0.9),
+      child: FloatingActionButton(
+        child: const Icon(Icons.filter_alt_outlined),
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: 200,
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                      const Text('Filter'),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -241,12 +267,12 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder<List<Data>>(
+    return FutureBuilder<List<DataStrains>>(
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final List<Data> data = snapshot.data!;
-          final List<Data> suggestionList = query.isEmpty
+          final List<DataStrains> data = snapshot.data!;
+          final List<DataStrains> suggestionList = query.isEmpty
               ? data
               : data
                   .where((d) =>
