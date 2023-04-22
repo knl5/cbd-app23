@@ -17,6 +17,28 @@ class _DetailsStrainState extends State<DetailsStrain> {
   bool isFavorited = false;
 
   @override
+  void initState() {
+    super.initState();
+    checkIfFavorited();
+  }
+
+  Future<void> checkIfFavorited() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userId = user.uid;
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(widget.data.id.toString())
+          .get();
+      setState(() {
+        isFavorited = docSnapshot.exists;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -43,17 +65,32 @@ class _DetailsStrainState extends State<DetailsStrain> {
                   color: isFavorited ? Colors.red : null,
                 ),
                 onPressed: () async {
+                  final User? user = FirebaseAuth.instance.currentUser;
+                  if (user == null) {
+                    // Redirect the user to the login page if they are not logged in
+                    // You can add your own logic here for handling user authentication
+                    return;
+                  }
                   setState(() {
                     isFavorited = !isFavorited;
                   });
-                  final User? user = FirebaseAuth.instance.currentUser;
-                  final userId = user?.uid ?? 'defaultUserId';
+                  final userId = user.uid;
                   final data = widget.data.toMap();
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(userId)
-                      .collection('favorites')
-                      .add(data);
+                  if (isFavorited) {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .collection('favorites')
+                        .doc(widget.data.id.toString())
+                        .set(data);
+                  } else {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .collection('favorites')
+                        .doc(widget.data.id.toString())
+                        .delete();
+                  }
                 },
               ),
               Positioned(
