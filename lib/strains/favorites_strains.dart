@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
 
+import 'details_strain.dart';
+
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);
 
@@ -52,9 +54,15 @@ class FavoritesPage extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final favorite = favorites[index];
               return ListTile(
-                title: Text(favorite.strain),
-                subtitle: Text(favorite.strainType),
-              );
+                  title: Text(favorite.strain),
+                  subtitle: Text(favorite.strainType),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailsStrain(data: favorites[index])));
+                  });
             },
           );
         },
