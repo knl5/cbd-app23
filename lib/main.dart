@@ -67,14 +67,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  //String _selectedFilter = "All";
   final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
-
-  /* void _onFilterPressed(String filter) {
-    setState(() {
-      _selectedFilter = filter;
-    });
-  } */
 
   void _onFilterPressed(String filter) {
     _selectedFilter.value = filter;
@@ -206,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           });
         },
-        child: Icon(Icons.filter_list),
+        child: const Icon(Icons.filter_list),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
