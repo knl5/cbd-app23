@@ -67,46 +67,62 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
-  static final List<Widget> _widgetOptions = <Widget>[
-    FutureBuilder<List<DataStrains>>(
-      future: fetchData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                    height: 100,
-                    width: 300,
-                    child: Card(
-                        child: ListTile(
-                            title: Text(snapshot.data![index].strain),
-                            subtitle: Text([
-                              snapshot.data![index].strainType,
-                              snapshot.data![index].goodEffects
-                            ].join(' | ')),
-                            textColor: Colors.black,
-                            isThreeLine: false,
-                            leading: Image(
-                                image: NetworkImage(
-                                    snapshot.data![index].imgThumb ?? 'None')),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailsStrain(
-                                          data: snapshot.data![index])));
-                            })));
-              });
-        } else if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-        // By default show a loading spinner.
-        return const CircularProgressIndicator();
+  void _onFilterPressed(String filter) {
+    _selectedFilter.value = filter;
+  }
+
+  late final List<Widget> _widgetOptions = <Widget>[
+    ValueListenableBuilder(
+      valueListenable: _selectedFilter,
+      builder: (BuildContext context, String filter, Widget? child) {
+        return FutureBuilder<List<DataStrains>>(
+          future: fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<DataStrains> data = snapshot.data!;
+              if (filter != "All") {
+                // Filter the data list based on the selected filter
+                data = data.where((item) => item.strainType == filter).toList();
+              }
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                        height: 100,
+                        width: 300,
+                        child: Card(
+                            child: ListTile(
+                                title: Text(data[index].strain),
+                                subtitle: Text([
+                                  data[index].strainType,
+                                  data[index].goodEffects
+                                ].join(' | ')),
+                                textColor: Colors.black,
+                                isThreeLine: false,
+                                leading: Image(
+                                    image: NetworkImage(
+                                        data[index].imgThumb ?? 'None')),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailsStrain(
+                                              data: data[index])));
+                                })));
+                  });
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            // By default show a loading spinner.
+            return const CircularProgressIndicator();
+          },
+        );
       },
     ),
+    const FavoritesPage(),
     Container(
       child: ProfileScreen(
         actions: [
@@ -116,8 +132,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     ),
-    //const BottomSheetFilter(),
-    const FavoritesPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -141,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 showSearch(context: context, delegate: MySearchDelegate());
               },
-              icon: const Icon(Icons.search))
+              icon: const Icon(Icons.search)),
         ],
         automaticallyImplyLeading: false,
         // Here we take the value from the MyHomePage object that was created by
@@ -150,6 +164,42 @@ class _MyHomePageState extends State<MyHomePage> {
           widget.title,
           style: GoogleFonts.comfortaa(),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showMenu(
+            context: context,
+            position: RelativeRect.fromLTRB(
+              MediaQuery.of(context).size.width - 50,
+              MediaQuery.of(context).size.height - 50,
+              0,
+              0,
+            ),
+            items: <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'All',
+                child: Text('All'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Sativa',
+                child: Text('Sativa'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Indica',
+                child: Text('Indica'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Hybrid',
+                child: Text('Hybrid'),
+              ),
+            ],
+          ).then((value) {
+            if (value != null) {
+              _onFilterPressed(value);
+            }
+          });
+        },
+        child: const Icon(Icons.filter_list),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -161,77 +211,18 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'My Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class BottomSheetApp extends StatelessWidget {
-  const BottomSheetApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xff6750a4),
-        useMaterial3: true,
-      ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Filter BottomSheet')),
-        body: const BottomSheetFilter(),
-      ),
-    );
-  }
-}
-
-class BottomSheetFilter extends StatelessWidget {
-  const BottomSheetFilter({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: const Alignment(0.8, 0.9),
-      child: FloatingActionButton(
-        child: const Icon(Icons.filter_alt_outlined),
-        onPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return SizedBox(
-                height: 200,
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ),
-                      const Text('Filter'),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
       ),
     );
   }
