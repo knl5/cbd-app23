@@ -1,4 +1,4 @@
-# my_app
+# my_CBDapp
 
 School project to validate my degree. Creation of a mobile application with Flutter and Firebase.
 This an app to inform but above all generalize, popularized CBD (cannabidiol) and its consumption.
