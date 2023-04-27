@@ -70,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
   void _onFilterPressed(String filter) {
-    _selectedFilter.value = filter;
+    setState(() {
+      _selectedFilter.value = filter;
+    });
   }
 
   late final List<Widget> _widgetOptions = <Widget>[
@@ -84,7 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
               List<DataStrains> data = snapshot.data!;
               if (filter != "All") {
                 // Filter the data list based on the selected filter
-                data = data.where((item) => item.strainType == filter).toList();
+                data = data
+                    .where((item) =>
+                        item.strainType == filter ||
+                        item.goodEffects.contains(filter))
+                    .toList();
               }
               return ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -140,6 +146,85 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _showFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Padding(padding: EdgeInsets.all(4.0)),
+            Text('Filter by type of plant or by need',
+                style: Theme.of(context).textTheme.titleSmall),
+            ListTile(
+              title: const Text('All'),
+              onTap: () {
+                _onFilterPressed('All');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Sativa'),
+              onTap: () {
+                _onFilterPressed('Sativa');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Hybrid'),
+              onTap: () {
+                _onFilterPressed('Hybrid');
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Indica'),
+              onTap: () {
+                _onFilterPressed('Indica');
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    title: const Text('Focused'),
+                    onTap: () {
+                      _onFilterPressed('focused');
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Relaxed'),
+                    onTap: () {
+                      _onFilterPressed('relaxed');
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Sleepy'),
+                    onTap: () {
+                      _onFilterPressed('sleepy');
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Energetic'),
+                    onTap: () {
+                      _onFilterPressed('energetic');
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -166,39 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showMenu(
-            context: context,
-            position: RelativeRect.fromLTRB(
-              MediaQuery.of(context).size.width - 50,
-              MediaQuery.of(context).size.height - 50,
-              0,
-              0,
-            ),
-            items: <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'All',
-                child: Text('All'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Sativa',
-                child: Text('Sativa'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Indica',
-                child: Text('Indica'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Hybrid',
-                child: Text('Hybrid'),
-              ),
-            ],
-          ).then((value) {
-            if (value != null) {
-              _onFilterPressed(value);
-            }
-          });
-        },
+        onPressed: _showFilterBottomSheet,
         child: const Icon(Icons.filter_list),
       ),
       body: Center(
