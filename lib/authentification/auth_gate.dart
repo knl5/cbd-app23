@@ -33,10 +33,18 @@ class AuthGate extends StatelessWidget {
           return SignInScreen(
             headerBuilder: (context, constraints, _) {
               return Padding(
-                padding: EdgeInsets.all(20),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.asset('assets/images/Marijane.png'),
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 4,
+                      child: Image.asset('assets/images/Marijane.png'),
+                    ),
+                    Text(
+                      'Marijane',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
                 ),
               );
             },
