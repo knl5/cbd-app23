@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Padding(padding: EdgeInsets.all(6.0)),
+            const Padding(padding: EdgeInsets.all(4.0)),
             Text('Filter by type of plant or by need',
                 style: Theme.of(context).textTheme.titleSmall),
             ListTile(
