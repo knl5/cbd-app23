@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,17 +30,30 @@ class _DetailsStrainState extends State<DetailsStrain> {
       return;
     }
 
+    final strainId = widget.data.id.toString();
+    final existingReview = await FirebaseFirestore.instance
+        .collection('strains')
+        .doc(strainId)
+        .collection('reviews')
+        .where('userId', isEqualTo: user.uid)
+        .limit(1)
+        .get();
+    if (existingReview.docs.isNotEmpty) {
+      // The user has already made a review for this strain
+      // You can add your own logic here for handling this case
+      return;
+    }
     if (_formKey.currentState!.validate()) {
       final review = Review(
         userId: user.uid,
         userName: user.displayName ?? 'Anonymous',
-        strainId: widget.data.id.toString(),
+        strainId: strainId,
         text: _textController.text,
         rating: _rating,
       );
       await FirebaseFirestore.instance
           .collection('strains')
-          .doc(widget.data.id.toString())
+          .doc(strainId)
           .collection('reviews')
           .add(review.toMap());
       _textController.clear();
