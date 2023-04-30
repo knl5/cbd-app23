@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 Future<List<DataStrains>> fetchData() async {
   var url = Uri.parse('https://weed-strain1.p.rapidapi.com/');
   final response = await http.get(url, headers: {
-    "X-RapidAPI-Key": '2d04d2b8damshe873bd108f32543p17583bjsn28060a1e9287',
+    "X-RapidAPI-Key": '24024d3c37msh77d432d3b0b04dbp1119dejsn66f40f00e220',
   });
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);

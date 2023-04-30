@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border_outlined),
-            label: 'My Favorites',
+            label: 'Favorites',
             activeIcon:
                 Icon(Icons.favorite, color: Colors.deepPurple, size: 30),
           ),

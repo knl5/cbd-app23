@@ -153,6 +153,70 @@ class _DetailsStrainState extends State<DetailsStrain> {
             ),
             const SizedBox(height: 16),
             const Text(
+              'Reviews',
+              style: TextStyle(fontSize: 18),
+            ),
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('strains')
+                  .doc(widget.data.id.toString())
+                  .collection('reviews')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final reviews = snapshot.data!.docs
+                    .map((doc) => Review(
+                          userId: doc['userId'],
+                          strainId: doc['strainId'],
+                          userName: doc['userName'],
+                          text: doc['text'],
+                          rating: doc['rating'],
+                        ))
+                    .toList();
+                final totalRating =
+                    reviews.fold<int>(0, (sum, review) => sum + review.rating);
+                final averageRating =
+                    reviews.isEmpty ? 0 : totalRating ~/ reviews.length;
+                return Column(
+                  children: [
+                    Text(
+                      'Average Rating: $averageRating',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: reviews.length,
+                      itemBuilder: (context, index) {
+                        final review = reviews[index];
+                        return ListTile(
+                          title: Text(review.userName),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.star, color: Colors.orange),
+                                  const SizedBox(width: 4),
+                                  Text(review.rating.toString()),
+                                ],
+                              ),
+                              const SizedBox(width: 8),
+                              Text(review.text),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            const Text(
               'Add a Review',
               style: TextStyle(fontSize: 18),
             ),
@@ -160,18 +224,21 @@ class _DetailsStrainState extends State<DetailsStrain> {
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      labelText: 'Review Text',
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _textController,
+                      decoration: const InputDecoration(
+                        labelText: 'Review Text',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a review';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a review';
-                      }
-                      return null;
-                    },
                   ),
                   const SizedBox(height: 16),
                   const Text(
@@ -235,65 +302,6 @@ class _DetailsStrainState extends State<DetailsStrain> {
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Reviews',
-              style: TextStyle(fontSize: 18),
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('strains')
-                  .doc(widget.data.id.toString())
-                  .collection('reviews')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final reviews = snapshot.data!.docs
-                    .map((doc) => Review(
-                          userId: doc['userId'],
-                          strainId: doc['strainId'],
-                          userName: doc['userName'],
-                          text: doc['text'],
-                          rating: doc['rating'],
-                        ))
-                    .toList();
-                final totalRating =
-                    reviews.fold<int>(0, (sum, review) => sum + review.rating);
-                final averageRating =
-                    reviews.isEmpty ? 0 : totalRating ~/ reviews.length;
-                return Column(
-                  children: [
-                    Text(
-                      'Average Rating: $averageRating',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: reviews.length,
-                      itemBuilder: (context, index) {
-                        final review = reviews[index];
-                        return ListTile(
-                          title: Text(review.userName),
-                          subtitle: Row(
-                            children: [
-                              const Icon(Icons.star, color: Colors.orange),
-                              const SizedBox(width: 4),
-                              Text(review.rating.toString()),
-                              const SizedBox(width: 8),
-                              Text(review.text),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
             ),
           ],
         ),
