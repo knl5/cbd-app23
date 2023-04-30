@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/strains/details_strain.dart';
-import 'package:my_app/strains/favorites_strains.dart';
+import 'package:my_app/pages/details_strain.dart';
+import 'package:my_app/pages/favorites_strains.dart';
+import 'package:my_app/fonctionnalities/search_strain.dart';
+import 'package:my_app/pages/list_strains.dart';
 import 'data/api_data.dart';
 import 'data/fetch_data.dart';
 import 'firebase_options.dart';
@@ -69,12 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
-  void _onFilterPressed(String filter) {
-    setState(() {
-      _selectedFilter.value = filter;
-    });
-  }
-
   late final List<Widget> _widgetOptions = <Widget>[
     ValueListenableBuilder(
       valueListenable: _selectedFilter,
@@ -128,6 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     ),
+    const StrainsPage(
+      title: 'All strains',
+    ),
     const FavoritesPage(),
     Container(
       child: ProfileScreen(
@@ -144,85 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  void _showFilterBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Padding(padding: EdgeInsets.all(4.0)),
-            Text('Filter by type of plant or by need',
-                style: Theme.of(context).textTheme.titleSmall),
-            ListTile(
-              title: const Text('All'),
-              onTap: () {
-                _onFilterPressed('All');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Sativa'),
-              onTap: () {
-                _onFilterPressed('Sativa');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Hybrid'),
-              onTap: () {
-                _onFilterPressed('Hybrid');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Indica'),
-              onTap: () {
-                _onFilterPressed('Indica');
-                Navigator.pop(context);
-              },
-            ),
-            const Divider(),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: const Text('Focused'),
-                    onTap: () {
-                      _onFilterPressed('focused');
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Relaxed'),
-                    onTap: () {
-                      _onFilterPressed('relaxed');
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Sleepy'),
-                    onTap: () {
-                      _onFilterPressed('sleepy');
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Energetic'),
-                    onTap: () {
-                      _onFilterPressed('energetic');
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -250,10 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
           style: GoogleFonts.comfortaa(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showFilterBottomSheet,
-        child: const Icon(Icons.filter_list),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -262,6 +178,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Strains',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
@@ -277,76 +197,6 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
-    );
-  }
-}
-
-class MySearchDelegate extends SearchDelegate {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder<List<DataStrains>>(
-      future: fetchData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final List<DataStrains> data = snapshot.data!;
-          final List<DataStrains> suggestionList = query.isEmpty
-              ? data
-              : data
-                  .where((d) =>
-                      d.strain.toLowerCase().contains(query.toLowerCase()))
-                  .toList();
-          return ListView.builder(
-            itemCount: suggestionList.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DetailsStrain(data: suggestionList[index]),
-                    ),
-                  );
-                },
-                child: ListTile(
-                  title: Text(suggestionList[index].strain),
-                ),
-              );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        return const CircularProgressIndicator();
-      },
     );
   }
 }
