@@ -167,7 +167,11 @@ class _StrainsPageState extends State<StrainsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Strains'),
+        title: const Text('All Strains'),
+        foregroundColor: Colors.green[700],
+        backgroundColor: Colors.white38,
+        elevation: 0,
+        centerTitle: false,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showFilterBottomSheet,

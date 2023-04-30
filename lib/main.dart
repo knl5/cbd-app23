@@ -169,6 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
           widget.title,
           style: GoogleFonts.comfortaa(),
         ),
+        backgroundColor: Colors.black87,
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -176,20 +178,30 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
+            activeIcon: Icon(
+              Icons.home_filled,
+              color: Colors.deepPurple,
+              size: 30,
+            ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Strains',
+            activeIcon:
+                Icon(Icons.list_rounded, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_border_outlined),
             label: 'My Favorites',
+            activeIcon:
+                Icon(Icons.favorite, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline_rounded),
             label: 'Profil',
+            activeIcon: Icon(Icons.person, color: Colors.deepPurple, size: 30),
           ),
         ],
         currentIndex: _selectedIndex,
