@@ -67,23 +67,11 @@ class AuthGate extends StatelessWidget {
             providerConfigs: const [
               EmailProviderConfiguration(),
             ],
-            /* ElevatedButton(
-              onPressed: () async {
-                try {
-                  final UserCredential userCredential =
-                      await signInWithGoogle();
-                  // Handle successful sign-in
-                } catch (e) {
-                  // Handle sign-in errors
-                }
-              },
-              child: const Text('Sign in with Google'),
-            ), */
           );
         }
 
         return const MyHomePage(
-          title: 'Marijane',
+          title: 'Marijane CBD',
         );
       },
     );
