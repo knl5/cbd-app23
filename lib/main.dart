@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +17,6 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(const MyApp());
 }
 
@@ -70,6 +70,63 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
+
+  final newPasswordController = TextEditingController();
+
+  Future<void> _showChangePasswordDialog(BuildContext context) async {
+    final auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change my password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: newPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Change'),
+              onPressed: () async {
+                try {
+                  await currentUser?.updatePassword(newPasswordController.text);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Password changed successfully'),
+                    ),
+                  );
+                  Navigator.pop(context);
+                } catch (e) {
+                  print(e);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Failed, not possible to change password for Google account'),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   late final List<Widget> _widgetOptions = <Widget>[
     ValueListenableBuilder(
@@ -129,13 +186,23 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     const FavoritesPage(),
     Container(
-      child: ProfileScreen(
-        actions: [
-          SignedOutAction((context) {
-            Navigator.of(context).pop();
-          })
-        ],
-      ),
+      child: ProfileScreen(actions: [
+        SignedOutAction((context) {
+          Navigator.of(context).pop();
+        })
+      ], children: [
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            alignment: Alignment.bottomLeft,
+          ),
+          label: const Text('Change Password'),
+          icon: const Icon(Icons.lock),
+          onPressed: () {
+            _showChangePasswordDialog(context);
+          },
+        ),
+      ]),
     ),
   ];
 
