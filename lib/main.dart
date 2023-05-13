@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,12 +12,16 @@ import 'data/api_data.dart';
 import 'data/fetch_data.dart';
 import 'firebase_options.dart';
 import 'authentification/auth_gate.dart';
+import 'pages/add_flowers.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Stripe.publishableKey =
+      'pk_test_51N4KheG6sHh2uNYcrQWLZXYe6HG8v4f2oFeo6PP24kkVizd7pLb1F2WomYcuTtzh7rn17U2dUeh88YnnGi8kOOkH00vvnJGcUb';
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 
@@ -112,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                   Navigator.pop(context);
                 } catch (e) {
-                  print(e);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -152,8 +156,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     return SizedBox(
                         height: 100,
                         width: 300,
-                        child: Card(
-                            child: ListTile(
+                        child: Column(
+                          children: [
+                            ListTile(
                                 title: Text(data[index].strain),
                                 subtitle: Text([
                                   data[index].strainType,
@@ -170,7 +175,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       MaterialPageRoute(
                                           builder: (context) => DetailsStrain(
                                               data: data[index])));
-                                })));
+                                }),
+                          ],
+                        ));
                   });
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
@@ -182,13 +189,17 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     ),
     const StrainsPage(
-      title: 'All strains',
+      title: 'All flowers',
     ),
+    const FlowerForm(),
     const FavoritesPage(),
     Container(
       child: ProfileScreen(actions: [
         SignedOutAction((context) {
-          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthGate()),
+          );
         })
       ], children: [
         TextButton.icon(
@@ -258,6 +269,12 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Strains',
             activeIcon:
                 Icon(Icons.list_rounded, color: Colors.deepPurple, size: 30),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline_rounded),
+            label: 'Add flower',
+            activeIcon: Icon(Icons.add_circle_outline_sharp,
+                color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border_outlined),

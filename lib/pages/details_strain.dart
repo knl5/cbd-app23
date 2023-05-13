@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
+/* import 'package:my_app/fonctionnalities/stripe_service.dart';*/
 import '../fonctionnalities/review_strain.dart';
+import '../fonctionnalities/stripe_checkout.dart';
 
 class DetailsStrain extends StatefulWidget {
   final DataStrains data;
@@ -154,6 +156,16 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         .join(' | ')),
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CheckoutPage()),
+                    );
+                  },
+                  child: Text('Checkout'),
+                )
               ],
             ),
             ListTile(

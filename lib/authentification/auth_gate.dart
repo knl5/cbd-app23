@@ -41,7 +41,7 @@ class AuthGate extends StatelessWidget {
                       child: Image.asset('assets/images/Marijane.png'),
                     ),
                     Text(
-                      'Marijane',
+                      'Marijane CBD',
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
