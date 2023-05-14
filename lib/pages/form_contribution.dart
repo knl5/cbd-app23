@@ -41,9 +41,35 @@ class _FlowerFormState extends State<FlowerForm> {
   final _benefitsController = TextEditingController();
   File? _image;
 
-  Future<void> _getImage() async {
+  Future<void> _selectImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Select an image'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              GestureDetector(
+                child: const Text('Take a picture'),
+                onTap: () async {
+                  Navigator.of(context)
+                      .pop(await picker.pickImage(source: ImageSource.camera));
+                },
+              ),
+              const Padding(padding: EdgeInsets.all(8.0)),
+              GestureDetector(
+                child: const Text('Select from gallery'),
+                onTap: () async {
+                  Navigator.of(context)
+                      .pop(await picker.pickImage(source: ImageSource.gallery));
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -63,7 +89,7 @@ class _FlowerFormState extends State<FlowerForm> {
           padding: const EdgeInsets.all(16),
           children: [
             GestureDetector(
-              onTap: _getImage,
+              onTap: _selectImage,
               child: Container(
                 height: 200,
                 decoration: BoxDecoration(
@@ -131,6 +157,29 @@ class _FlowerFormState extends State<FlowerForm> {
                     _typeController.text,
                     _benefitsController.text,
                     _image!,
+                  );
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Success'),
+                        content: const Text('Flower added successfully.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _nameController.clear();
+                              _typeController.clear();
+                              _benefitsController.clear();
+                              setState(() {
+                                _image = null;
+                              });
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },

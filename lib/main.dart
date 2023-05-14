@@ -4,15 +4,14 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/pages/details_strain.dart';
+import 'package:my_app/data/flowers_data.dart';
 import 'package:my_app/pages/favorites_strains.dart';
 import 'package:my_app/fonctionnalities/search_strain.dart';
+import 'package:my_app/pages/home_lists.dart';
 import 'package:my_app/pages/list_strains.dart';
-import 'data/api_data.dart';
-import 'data/fetch_data.dart';
 import 'firebase_options.dart';
 import 'authentification/auth_gate.dart';
-import 'pages/add_flowers.dart';
+import 'pages/form_contribution.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +73,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
   final newPasswordController = TextEditingController();
 
@@ -133,61 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   late final List<Widget> _widgetOptions = <Widget>[
-    ValueListenableBuilder(
-      valueListenable: _selectedFilter,
-      builder: (BuildContext context, String filter, Widget? child) {
-        return FutureBuilder<List<DataStrains>>(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<DataStrains> data = snapshot.data!;
-              if (filter != "All") {
-                // Filter the data list based on the selected filter
-                data = data
-                    .where((item) =>
-                        item.strainType == filter ||
-                        item.goodEffects.contains(filter))
-                    .toList();
-              }
-              return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                        height: 100,
-                        width: 300,
-                        child: Column(
-                          children: [
-                            ListTile(
-                                title: Text(data[index].strain),
-                                subtitle: Text([
-                                  data[index].strainType,
-                                  data[index].goodEffects
-                                ].join(' | ')),
-                                textColor: Colors.black,
-                                isThreeLine: false,
-                                leading: Image(
-                                    image: NetworkImage(
-                                        data[index].imgThumb ?? 'None')),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailsStrain(
-                                              data: data[index])));
-                                }),
-                          ],
-                        ));
-                  });
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            // By default show a loading spinner.
-            return const CircularProgressIndicator();
-          },
-        );
-      },
-    ),
+    const FlowerList(),
     const StrainsPage(
       title: 'All flowers',
     ),
@@ -225,12 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[

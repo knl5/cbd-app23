@@ -156,16 +156,23 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         .join(' | ')),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CheckoutPage()),
-                    );
-                  },
-                  child: Text('Checkout'),
-                )
+                Positioned(
+                    top: 0,
+                    right: 5,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CheckoutPage()),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,
+                      ),
+                      child: Text('Buy it'),
+                    ))
               ],
             ),
             ListTile(

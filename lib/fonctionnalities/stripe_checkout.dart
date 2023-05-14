@@ -27,26 +27,48 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            TextFormField(
-              controller: _quantityController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Quantity',
-                helperText: 'Enter the quantity of the item',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  quantity = int.parse(value);
-                });
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      quantity = quantity > 1 ? quantity - 1 : 1;
+                      _quantityController.text = quantity.toString();
+                    });
+                  },
+                  child: Icon(Icons.remove),
+                ),
+                Text(
+                  quantity.toString(),
+                  style: const TextStyle(fontSize: 16),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      quantity = quantity < 5 ? quantity + 1 : 5;
+                      _quantityController.text = quantity.toString();
+                    });
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Text('Total Cost: \$${calculateCost()}'),
             const SizedBox(height: 16),
             TextButton(
-              child: const Text('Make Payment'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.deepPurple,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(color: Colors.deepPurple),
+                ),
+              ),
+              child: const Text('Checkout'),
               onPressed: () async {
                 await makePayment();
               },
@@ -122,7 +144,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         showDialog(
           context: context,
           builder: (_) => const AlertDialog(
-            content: Text("Error Occured "),
+            content: Text("Payment Cancelled"),
           ),
         );
       });
