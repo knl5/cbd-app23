@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -13,19 +15,43 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   Map<String, dynamic>? paymentIntent;
+  int quantity = 1;
+  final TextEditingController _quantityController =
+      TextEditingController(text: '1');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stripe Payment'),
+        title: const Text('Payment'),
       ),
       body: Center(
-        child: TextButton(
-          child: const Text('Make Payment'),
-          onPressed: () async {
-            await makePayment();
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: _quantityController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Quantity',
+                helperText: 'Enter the quantity of the item',
+              ),
+              onChanged: (value) {
+                setState(() {
+                  quantity = int.parse(value);
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+            Text('Total Cost: \$${calculateCost()}'),
+            const SizedBox(height: 16),
+            TextButton(
+              child: const Text('Make Payment'),
+              onPressed: () async {
+                await makePayment();
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -33,14 +59,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   Future<void> makePayment() async {
     try {
-      paymentIntent = await createPaymentIntent('10', 'EUR');
+      paymentIntent =
+          await createPaymentIntent(calculateCost().toString(), 'EUR');
       //Payment Sheet
       await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
                   paymentIntentClientSecret: paymentIntent!['client_secret'],
                   style: ThemeMode.dark,
-                  merchantDisplayName: 'Linkedin'))
+                  merchantDisplayName: 'CBD Shop Marijane'))
           .then((value) {});
 
       ///now finally display payment sheeet
@@ -52,53 +79,70 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   displayPaymentSheet() async {
+    final user = FirebaseAuth.instance.currentUser;
     try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        // Add purchase details to Firebase
+        final clientID = user!.uid;
+        const itemName = 'CBD flower';
+        final quantity = _quantityController.text;
+        final paymentID = paymentIntent!['id'];
+        final cost = calculateCost().toString();
+        await FirebaseFirestore.instance.collection('purchases').add({
+          'clientID': clientID,
+          'paymentID': paymentID,
+          'itemName': itemName,
+          'quantity': quantity,
+          'cost': cost,
+        });
+
         showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          ),
-                          Text("Payment Successfull"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ));
+          context: context,
+          builder: (_) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: const [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    ),
+                    Text("Payment Successfull"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("paid successfully")));
-
         paymentIntent = null;
       }).onError((error, stackTrace) {
         showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Text("Error Occured "),
-                ));
+          context: context,
+          builder: (_) => const AlertDialog(
+            content: Text("Error Occured "),
+          ),
+        );
       });
     } on StripeException catch (e) {
       showDialog(
-          context: context,
-          builder: (_) => const AlertDialog(
-                content: Text("Cancelled "),
-              ));
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Text("Cancelled "),
+        ),
+      );
     } catch (e) {
       showDialog(
-          context: context,
-          builder: (_) => const AlertDialog(
-                content: Text("Cancelled "),
-              ));
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Text("Cancelled "),
+        ),
+      );
     }
   }
 
-//  Future<Map<String, dynamic>>
   createPaymentIntent(String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
@@ -106,7 +150,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'currency': currency,
         'payment_method_types[]': 'card'
       };
-
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
@@ -128,5 +171,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
   calculateAmount(String amount) {
     final calculatedAmout = (int.parse(amount)) * 100;
     return calculatedAmout.toString();
+  }
+
+  calculateCost() {
+    return 10 * quantity;
   }
 }
