@@ -5,28 +5,104 @@ final contributionList = FirebaseFirestore.instance;
 Future<QuerySnapshot> flowers = contributionList.collection('flowers').get();
 
 class FlowerList extends StatelessWidget {
-  const FlowerList({super.key});
+  const FlowerList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: flowers,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final List<DocumentSnapshot> documents = snapshot.data!.docs;
-            return ListView(
+      future: contributionList.collection('flowers').get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<DocumentSnapshot> documents = snapshot.data!.docs;
+          return ListView(
+            children: [
+              Column(
                 children: documents
                     .map((doc) => Card(
                           child: ListTile(
                             title: Text(doc['name']),
                             subtitle: Text(doc['type']),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FlowerDetailsPage(
+                                    flower: doc,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ))
-                    .toList());
-          } else if (snapshot.hasError) {
-            return const Text('error');
-          }
-          return const CircularProgressIndicator();
-        });
+                    .toList(),
+              )
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return const Text('error');
+        }
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+}
+
+class FlowerDetailsPage extends StatelessWidget {
+  final DocumentSnapshot flower;
+
+  const FlowerDetailsPage({required this.flower, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(flower['name']),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Stack(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(60),
+                    bottomRight: Radius.circular(60),
+                  ),
+                  child: Image(
+                    image: NetworkImage(flower['image_url']),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 5,
+                      bottom: 15,
+                    ),
+                    child: Text(
+                      [flower['name'], flower['type']].join(' | '),
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ListTile(
+              title: const Text('Good Effects'),
+              subtitle: Text(flower['benefits']),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

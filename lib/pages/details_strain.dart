@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
-/* import 'package:my_app/fonctionnalities/stripe_service.dart';*/
 import '../fonctionnalities/review_strain.dart';
 import '../fonctionnalities/stripe_checkout.dart';
 
@@ -152,8 +151,14 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       top: 5,
                       bottom: 10,
                     ),
-                    child: Text([widget.data.strain, widget.data.strainType]
-                        .join(' | ')),
+                    child: Text(
+                        [widget.data.strain, widget.data.strainType]
+                            .join(' | '),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        )),
                   ),
                 ),
                 Positioned(
