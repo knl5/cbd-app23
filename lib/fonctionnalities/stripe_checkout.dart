@@ -29,6 +29,28 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            ListView(
+              shrinkWrap: true,
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Street Address'),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'City'),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Country'),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Zip Code'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -39,7 +61,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       _quantityController.text = quantity.toString();
                     });
                   },
-                  child: Icon(Icons.remove),
+                  child: const Icon(Icons.remove),
                 ),
                 Text(
                   quantity.toString(),

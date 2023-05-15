@@ -149,7 +149,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       left: 20,
                       right: 20,
                       top: 5,
-                      bottom: 10,
+                      bottom: 30,
                     ),
                     child: Text(
                         [widget.data.strain, widget.data.strainType]
@@ -176,7 +176,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.green,
                       ),
-                      child: Text('Buy it'),
+                      child: const Text('Buy it'),
                     ))
               ],
             ),
@@ -189,157 +189,196 @@ class _DetailsStrainState extends State<DetailsStrain> {
               subtitle: Text(widget.data.sideEffects ?? 'None'),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Reviews',
-              style: TextStyle(fontSize: 18),
+
+            // Reviews
+            const Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Divider(thickness: 1, color: Colors.black),
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('strains')
-                  .doc(widget.data.id.toString())
-                  .collection('reviews')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final reviews = snapshot.data!.docs
-                    .map((doc) => Review(
-                          userId: doc['userId'],
-                          strainId: doc['strainId'],
-                          userName: doc['userName'],
-                          text: doc['text'],
-                          rating: doc['rating'],
-                        ))
-                    .toList();
-                final totalRating =
-                    reviews.fold<int>(0, (sum, review) => sum + review.rating);
-                final averageRating =
-                    reviews.isEmpty ? 0 : totalRating ~/ reviews.length;
-                return Column(
-                  children: [
-                    Text(
-                      'Average Rating: $averageRating',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: reviews.length,
-                      itemBuilder: (context, index) {
-                        final review = reviews[index];
-                        return ListTile(
-                          title: Text(review.userName),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(Icons.star, color: Colors.orange),
-                                  const SizedBox(width: 4),
-                                  Text(review.rating.toString()),
-                                ],
-                              ),
-                              const SizedBox(width: 8),
-                              Text(review.text),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Add a Review',
-              style: TextStyle(fontSize: 18),
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        labelText: 'Review Text',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a review';
-                        }
-                        return null;
-                      },
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10.0, top: 4, bottom: 8),
+                    child: Text(
+                      'Reviews',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Rating',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('strains')
+                        .doc(widget.data.id.toString())
+                        .collection('reviews')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final reviews = snapshot.data!.docs
+                          .map((doc) => Review(
+                                userId: doc['userId'],
+                                strainId: doc['strainId'],
+                                userName: doc['userName'],
+                                text: doc['text'],
+                                rating: doc['rating'],
+                              ))
+                          .toList();
+                      final totalRating = reviews.fold<int>(
+                          0, (sum, review) => sum + review.rating);
+                      final averageRating =
+                          reviews.isEmpty ? 0 : totalRating ~/ reviews.length;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text(
+                              'Average Rating: $averageRating',
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: reviews.length,
+                            itemBuilder: (context, index) {
+                              final review = reviews[index];
+                              return ListTile(
+                                title: Text(review.userName),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(review.rating.toString()),
+                                        const Icon(Icons.star,
+                                            color: Colors.orange),
+                                        const SizedBox(width: 14),
+                                        Text.rich(
+                                          TextSpan(
+                                            text: ' " ',
+                                            children: [
+                                              TextSpan(
+                                                text: review.text,
+                                              ),
+                                              const TextSpan(
+                                                text: ' " ',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.star),
-                        color: _rating >= 1 ? Colors.orange : Colors.grey,
-                        onPressed: () {
-                          setState(() {
-                            _rating = 1;
-                          });
-                        },
+                ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    'Add a Review',
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.star),
+                            color: _rating >= 1 ? Colors.orange : Colors.grey,
+                            onPressed: () {
+                              setState(() {
+                                _rating = 1;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.star),
+                            color: _rating >= 2 ? Colors.orange : Colors.grey,
+                            onPressed: () {
+                              setState(() {
+                                _rating = 2;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.star),
+                            color: _rating >= 3 ? Colors.orange : Colors.grey,
+                            onPressed: () {
+                              setState(() {
+                                _rating = 3;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.star),
+                            color: _rating >= 4 ? Colors.orange : Colors.grey,
+                            onPressed: () {
+                              setState(() {
+                                _rating = 4;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.star),
+                            color: _rating >= 5 ? Colors.orange : Colors.grey,
+                            onPressed: () {
+                              setState(() {
+                                _rating = 5;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.star),
-                        color: _rating >= 2 ? Colors.orange : Colors.grey,
-                        onPressed: () {
-                          setState(() {
-                            _rating = 2;
-                          });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 2.0),
+                        child: TextFormField(
+                          controller: _textController,
+                          decoration: const InputDecoration(
+                            labelText: 'Describe your experience',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a review';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.star),
-                        color: _rating >= 3 ? Colors.orange : Colors.grey,
-                        onPressed: () {
-                          setState(() {
-                            _rating = 3;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.star),
-                        color: _rating >= 4 ? Colors.orange : Colors.grey,
-                        onPressed: () {
-                          setState(() {
-                            _rating = 4;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.star),
-                        color: _rating >= 5 ? Colors.orange : Colors.grey,
-                        onPressed: () {
-                          setState(() {
-                            _rating = 5;
-                          });
-                        },
-                      ),
+                      const SizedBox(height: 6),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ElevatedButton(
+                          onPressed: _submitReview,
+                          child: const Text('Submit'),
+                        ),
+                      )
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _submitReview,
-                    child: const Text('Submit'),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              ],
+            )
           ],
         ),
       ),

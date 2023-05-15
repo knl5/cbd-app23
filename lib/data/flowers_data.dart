@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_app/pages/favorites_strains.dart';
+import 'package:my_app/pages/list_strains.dart';
 
 final contributionList = FirebaseFirestore.instance;
 Future<QuerySnapshot> flowers = contributionList.collection('flowers').get();
@@ -16,6 +18,10 @@ class FlowerList extends StatelessWidget {
           final List<DocumentSnapshot> documents = snapshot.data!.docs;
           return ListView(
             children: [
+              Text(
+                'New CBD Flowers',
+                style: Theme.of(context).textTheme.headline4,
+              ),
               Column(
                 children: documents
                     .map((doc) => Card(
@@ -35,7 +41,12 @@ class FlowerList extends StatelessWidget {
                           ),
                         ))
                     .toList(),
-              )
+              ),
+              Text(
+                'CBD Flowers most popular',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              Column(),
             ],
           );
         } else if (snapshot.hasError) {

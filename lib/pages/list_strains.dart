@@ -91,15 +91,20 @@ class _StrainsPageState extends State<StrainsPage> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Padding(padding: EdgeInsets.all(4.0)),
-            Text('Filter by type of plant or by need',
-                style: Theme.of(context).textTheme.titleSmall),
+            const Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Text('Filter by type of plant or by need',
+                  style:
+                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+            ),
             ListTile(
               title: const Text('All'),
               onTap: () {
                 _onFilterPressed('All');
                 Navigator.pop(context);
               },
+              textColor:
+                  _selectedFilter.value == 'All' ? Colors.deepPurple : null,
             ),
             ListTile(
               title: const Text('Sativa'),
@@ -107,6 +112,8 @@ class _StrainsPageState extends State<StrainsPage> {
                 _onFilterPressed('Sativa');
                 Navigator.pop(context);
               },
+              textColor:
+                  _selectedFilter.value == 'Sativa' ? Colors.deepPurple : null,
             ),
             ListTile(
               title: const Text('Hybrid'),
@@ -114,6 +121,8 @@ class _StrainsPageState extends State<StrainsPage> {
                 _onFilterPressed('Hybrid');
                 Navigator.pop(context);
               },
+              textColor:
+                  _selectedFilter.value == 'Hybrid' ? Colors.deepPurple : null,
             ),
             ListTile(
               title: const Text('Indica'),
@@ -121,8 +130,13 @@ class _StrainsPageState extends State<StrainsPage> {
                 _onFilterPressed('Indica');
                 Navigator.pop(context);
               },
+              textColor:
+                  _selectedFilter.value == 'Indica' ? Colors.deepPurple : null,
             ),
-            const Divider(),
+            const Padding(
+              padding: EdgeInsets.only(left: 6.0, right: 6.0),
+              child: Divider(color: Colors.black),
+            ),
             Expanded(
               child: ListView(
                 children: <Widget>[
@@ -132,6 +146,9 @@ class _StrainsPageState extends State<StrainsPage> {
                       _onFilterPressed('focused');
                       Navigator.pop(context);
                     },
+                    textColor: _selectedFilter.value == 'focused'
+                        ? Colors.deepPurple
+                        : null,
                   ),
                   ListTile(
                     title: const Text('Relaxed'),
@@ -139,6 +156,9 @@ class _StrainsPageState extends State<StrainsPage> {
                       _onFilterPressed('relaxed');
                       Navigator.pop(context);
                     },
+                    textColor: _selectedFilter.value == 'relaxed'
+                        ? Colors.deepPurple
+                        : null,
                   ),
                   ListTile(
                     title: const Text('Sleepy'),
@@ -146,6 +166,9 @@ class _StrainsPageState extends State<StrainsPage> {
                       _onFilterPressed('sleepy');
                       Navigator.pop(context);
                     },
+                    textColor: _selectedFilter.value == 'sleepy'
+                        ? Colors.deepPurple
+                        : null,
                   ),
                   ListTile(
                     title: const Text('Energetic'),
@@ -153,6 +176,9 @@ class _StrainsPageState extends State<StrainsPage> {
                       _onFilterPressed('energetic');
                       Navigator.pop(context);
                     },
+                    textColor: _selectedFilter.value == 'energetic'
+                        ? Colors.deepPurple
+                        : null,
                   ),
                 ],
               ),

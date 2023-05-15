@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home_outlined, color: Colors.black),
             label: 'Home',
             activeIcon: Icon(
               Icons.home_filled,
@@ -203,25 +203,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.list, color: Colors.black),
             label: 'Strains',
             activeIcon:
                 Icon(Icons.list_rounded, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline_rounded),
-            label: 'Add flower',
-            activeIcon: Icon(Icons.add_circle_outline_sharp,
+            icon: Icon(Icons.add_circle_outline_rounded, color: Colors.black),
+            label: 'Add',
+            activeIcon: Icon(Icons.add_circle_sharp,
                 color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border_outlined),
+            icon: Icon(Icons.favorite_border_outlined, color: Colors.black),
             label: 'Favorites',
             activeIcon:
                 Icon(Icons.favorite, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
+            icon: Icon(Icons.person_outline_rounded, color: Colors.black),
             label: 'Profil',
             activeIcon: Icon(Icons.person, color: Colors.deepPurple, size: 30),
           ),
