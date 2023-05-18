@@ -30,6 +30,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ListView(
+              padding: EdgeInsetsGeometry.lerp(
+                  const EdgeInsets.all(20), const EdgeInsets.all(0), 0.5),
               shrinkWrap: true,
               children: [
                 TextFormField(
@@ -159,6 +161,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ),
         );
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("paid successfully")));
         paymentIntent = null;

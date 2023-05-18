@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_app/pages/favorites_strains.dart';
-import 'package:my_app/pages/list_strains.dart';
 
 final contributionList = FirebaseFirestore.instance;
 Future<QuerySnapshot> flowers = contributionList.collection('flowers').get();
@@ -16,38 +14,70 @@ class FlowerList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final List<DocumentSnapshot> documents = snapshot.data!.docs;
-          return ListView(
-            children: [
-              Text(
-                'New CBD Flowers',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Column(
-                children: documents
-                    .map((doc) => Card(
-                          child: ListTile(
-                            title: Text(doc['name']),
-                            subtitle: Text(doc['type']),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FlowerDetailsPage(
-                                    flower: doc,
-                                  ),
-                                ),
-                              );
-                            },
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: documents
+                  .map(
+                    (doc) => GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                FlowerDetailsPage(flower: doc),
                           ),
-                        ))
-                    .toList(),
-              ),
-              Text(
-                'CBD Flowers most popular',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Column(),
-            ],
+                        );
+                      },
+                      child: Container(
+                        width: 200.0,
+                        height: 350.0,
+                        margin: const EdgeInsets.only(left: 25.0),
+                        child: Container(
+                          height: 350.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 85, 147, 135),
+                              width: 2,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 30),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image(
+                                  image: NetworkImage(doc['image_url']),
+                                  fit: BoxFit.cover,
+                                  colorBlendMode: BlendMode.dstATop,
+                                  color: Colors.black.withOpacity(0.8),
+                                  width: 150,
+                                  height: 150,
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              Text(
+                                doc['name'],
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                'Good Effects: ${doc['benefits']}',
+                                style: const TextStyle(color: Colors.black),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
           );
         } else if (snapshot.hasError) {
           return const Text('error');

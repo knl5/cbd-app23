@@ -4,7 +4,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/data/flowers_data.dart';
 import 'package:my_app/pages/favorites_strains.dart';
 import 'package:my_app/fonctionnalities/search_strain.dart';
 import 'package:my_app/pages/home_lists.dart';
@@ -131,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   late final List<Widget> _widgetOptions = <Widget>[
-    const FlowerList(),
+    const HomeLists(title: 'Welcome'),
     const StrainsPage(
       title: 'All flowers',
     ),

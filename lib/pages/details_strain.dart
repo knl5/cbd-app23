@@ -174,7 +174,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color.fromARGB(255, 85, 147, 135),
                       ),
                       child: const Text('Buy it'),
                     ))
@@ -206,7 +206,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green),
+                          color: Color.fromARGB(255, 85, 147, 135)),
                     ),
                   ),
                   StreamBuilder<QuerySnapshot>(
@@ -291,7 +291,8 @@ class _DetailsStrainState extends State<DetailsStrain> {
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
                     'Add a Review',
-                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    style: TextStyle(
+                        fontSize: 16, color: Color.fromARGB(255, 85, 147, 135)),
                   ),
                 ),
                 Form(

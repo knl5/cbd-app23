@@ -14,7 +14,7 @@ class StrainsPage extends StatefulWidget {
 }
 
 class _StrainsPageState extends State<StrainsPage> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
   void _onFilterPressed(String filter) {
@@ -44,20 +44,33 @@ class _StrainsPageState extends State<StrainsPage> {
                   itemCount: data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
-                      height: 100,
+                      height: 200,
                       width: 300,
                       child: Card(
+                        margin: const EdgeInsets.all(10),
+                        color: index % 3 == 0
+                            ? const Color.fromARGB(255, 142, 127, 218)
+                            : index % 3 == 1
+                                ? const Color.fromARGB(255, 85, 147, 135)
+                                : const Color.fromARGB(255, 57, 57, 57),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
                         child: ListTile(
-                            title: Text(data[index].strain),
-                            subtitle: Text([
-                              data[index].strainType,
-                              data[index].goodEffects
-                            ].join(' | ')),
+                            contentPadding: const EdgeInsets.all(10),
+                            title: Text(data[index].strain,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            subtitle: Text(data[index].goodEffects),
                             textColor: Colors.black,
                             isThreeLine: false,
                             leading: Image(
                                 image: NetworkImage(
-                                    data[index].imgThumb ?? 'None')),
+                                    data[index].imgThumb ?? 'None'),
+                                fit: BoxFit.cover,
+                                colorBlendMode: BlendMode.dstATop,
+                                color: Colors.black.withOpacity(0.8),
+                                width: 100,
+                                height: 100),
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -78,11 +91,11 @@ class _StrainsPageState extends State<StrainsPage> {
     ),
   ];
 
-  void _onItemTapped(int index) {
+  /* void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
+  } */
 
   void _showFilterBottomSheet() {
     showModalBottomSheet(
@@ -192,13 +205,6 @@ class _StrainsPageState extends State<StrainsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Strains'),
-        foregroundColor: Colors.green[700],
-        backgroundColor: Colors.white38,
-        elevation: 0,
-        centerTitle: false,
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showFilterBottomSheet,
         child: const Icon(Icons.filter_list),
