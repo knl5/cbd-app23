@@ -77,115 +77,123 @@ class _FlowerFormState extends State<FlowerForm> {
     }
   }
 
+  void _dismissKeyboard() {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add New Flower'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            GestureDetector(
-              onTap: _selectImage,
-              child: Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(12),
+      body: GestureDetector(
+        onTap: _dismissKeyboard, // Dismiss keyboard when tapping outside
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              const Text('Add a new flower/product',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 18),
+              GestureDetector(
+                onTap: _selectImage,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: _image == null
+                      ? Icon(
+                          Icons.camera_alt,
+                          size: 64,
+                          color: Colors.grey[400],
+                        )
+                      : Image.file(_image!, fit: BoxFit.cover),
                 ),
-                child: _image == null
-                    ? Icon(
-                        Icons.camera_alt,
-                        size: 64,
-                        color: Colors.grey[400],
-                      )
-                    : Image.file(_image!, fit: BoxFit.cover),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _typeController,
-              decoration: const InputDecoration(
-                labelText: 'Type',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _typeController,
+                decoration: const InputDecoration(
+                  labelText: 'Type',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a type';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter a type';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _benefitsController,
-              decoration: const InputDecoration(
-                labelText: 'Benefits',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _benefitsController,
+                decoration: const InputDecoration(
+                  labelText: 'Benefits',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter some benefits';
+                  }
+                  return null;
+                },
+                maxLines: 3,
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter some benefits';
-                }
-                return null;
-              },
-              maxLines: 3,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate() && _image != null) {
-                  addFlowerToFirestore(
-                    _nameController.text,
-                    _typeController.text,
-                    _benefitsController.text,
-                    _image!,
-                  );
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Success'),
-                        content: const Text('Flower added successfully.'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _nameController.clear();
-                              _typeController.clear();
-                              _benefitsController.clear();
-                              setState(() {
-                                _image = null;
-                              });
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: const Text('Save'),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate() && _image != null) {
+                    addFlowerToFirestore(
+                      _nameController.text,
+                      _typeController.text,
+                      _benefitsController.text,
+                      _image!,
+                    );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Success'),
+                          content: const Text('Flower added successfully.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                _nameController.clear();
+                                _typeController.clear();
+                                _benefitsController.clear();
+                                setState(() {
+                                  _image = null;
+                                });
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

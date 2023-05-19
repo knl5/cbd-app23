@@ -18,6 +18,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
   int quantity = 1;
   final TextEditingController _quantityController =
       TextEditingController(text: '1');
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _zipCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +40,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
               shrinkWrap: true,
               children: [
                 TextFormField(
+                  controller: _usernameController,
                   decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
+                  controller: _streetController,
                   decoration:
                       const InputDecoration(labelText: 'Street Address'),
                 ),
                 TextFormField(
+                  controller: _cityController,
                   decoration: const InputDecoration(labelText: 'City'),
                 ),
                 TextFormField(
+                  controller: _countryController,
                   decoration: const InputDecoration(labelText: 'Country'),
                 ),
                 TextFormField(
+                  controller: _zipCodeController,
                   decoration: const InputDecoration(labelText: 'Zip Code'),
                 ),
               ],
@@ -134,12 +144,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
         final quantity = _quantityController.text;
         final paymentID = paymentIntent!['id'];
         final cost = calculateCost().toString();
+        final name = _usernameController.text;
+        final street = _streetController.text;
+        final city = _cityController.text;
+        final country = _countryController.text;
+        final zipCode = _zipCodeController.text;
         await FirebaseFirestore.instance.collection('purchases').add({
           'clientID': clientID,
           'paymentID': paymentID,
           'itemName': itemName,
           'quantity': quantity,
           'cost': cost,
+          'name': name,
+          'street': street,
+          'city': city,
+          'country': country,
+          'zipCode': zipCode,
         });
 
         showDialog(
