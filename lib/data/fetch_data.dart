@@ -16,3 +16,17 @@ Future<List<DataStrains>> fetchData() async {
     throw Exception('Unexpected error occured!');
   }
 }
+// for homelist
+Future<List<DataStrains>> fetchDataFiltered(String difficulty) async {
+  var url =
+      Uri.parse('https://weed-strain1.p.rapidapi.com/?difficulty=$difficulty');
+  final response = await http.get(url, headers: {
+    "X-RapidAPI-Key": '24024d3c37msh77d432d3b0b04dbp1119dejsn66f40f00e220',
+  });
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    return jsonResponse.map((data) => DataStrains.fromJson(data)).toList();
+  } else {
+    throw Exception('Unexpected error occured!');
+  }
+}

@@ -1,22 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/pages/details_strain.dart';
 import 'package:my_app/pages/favorites_strains.dart';
 import 'package:my_app/fonctionnalities/search_strain.dart';
+import 'package:my_app/pages/home_lists.dart';
 import 'package:my_app/pages/list_strains.dart';
-import 'data/api_data.dart';
-import 'data/fetch_data.dart';
 import 'firebase_options.dart';
 import 'authentification/auth_gate.dart';
+import 'pages/form_contribution.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  Stripe.publishableKey =
+      'pk_test_51N4KheG6sHh2uNYcrQWLZXYe6HG8v4f2oFeo6PP24kkVizd7pLb1F2WomYcuTtzh7rn17U2dUeh88YnnGi8kOOkH00vvnJGcUb';
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 
@@ -69,73 +72,91 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  final ValueNotifier<String> _selectedFilter = ValueNotifier<String>("All");
 
-  late final List<Widget> _widgetOptions = <Widget>[
-    ValueListenableBuilder(
-      valueListenable: _selectedFilter,
-      builder: (BuildContext context, String filter, Widget? child) {
-        return FutureBuilder<List<DataStrains>>(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<DataStrains> data = snapshot.data!;
-              if (filter != "All") {
-                // Filter the data list based on the selected filter
-                data = data
-                    .where((item) =>
-                        item.strainType == filter ||
-                        item.goodEffects.contains(filter))
-                    .toList();
-              }
-              return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                        height: 100,
-                        width: 300,
-                        child: Card(
-                            child: ListTile(
-                                title: Text(data[index].strain),
-                                subtitle: Text([
-                                  data[index].strainType,
-                                  data[index].goodEffects
-                                ].join(' | ')),
-                                textColor: Colors.black,
-                                isThreeLine: false,
-                                leading: Image(
-                                    image: NetworkImage(
-                                        data[index].imgThumb ?? 'None')),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailsStrain(
-                                              data: data[index])));
-                                })));
-                  });
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            // By default show a loading spinner.
-            return const CircularProgressIndicator();
-          },
+  final newPasswordController = TextEditingController();
+
+  Future<void> _showChangePasswordDialog(BuildContext context) async {
+    final auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change my password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: newPasswordController,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Change'),
+              onPressed: () async {
+                try {
+                  await currentUser?.updatePassword(newPasswordController.text);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Password changed successfully'),
+                    ),
+                  );
+                  Navigator.pop(context);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Failed, not possible to change password for Google account'),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         );
       },
-    ),
+    );
+  }
+
+  late final List<Widget> _widgetOptions = <Widget>[
+    const HomeLists(title: 'Welcome'),
     const StrainsPage(
-      title: 'All strains',
+      title: 'All flowers',
     ),
+    const FlowerForm(),
     const FavoritesPage(),
     Container(
-      child: ProfileScreen(
-        actions: [
-          SignedOutAction((context) {
-            Navigator.of(context).pop();
-          })
-        ],
-      ),
+      child: ProfileScreen(actions: [
+        SignedOutAction((context) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthGate()),
+          );
+        })
+      ], children: [
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            alignment: Alignment.bottomLeft,
+          ),
+          label: const Text('Change Password'),
+          icon: const Icon(Icons.lock),
+          onPressed: () {
+            _showChangePasswordDialog(context);
+          },
+        ),
+      ]),
     ),
   ];
 
@@ -147,12 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -178,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home_outlined, color: Colors.black),
             label: 'Home',
             activeIcon: Icon(
               Icons.home_filled,
@@ -187,19 +202,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.list, color: Colors.black),
             label: 'Strains',
             activeIcon:
                 Icon(Icons.list_rounded, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border_outlined),
+            icon: Icon(Icons.add_circle_outline_rounded, color: Colors.black),
+            label: 'Add',
+            activeIcon: Icon(Icons.add_circle_sharp,
+                color: Colors.deepPurple, size: 30),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border_outlined, color: Colors.black),
             label: 'Favorites',
             activeIcon:
                 Icon(Icons.favorite, color: Colors.deepPurple, size: 30),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
+            icon: Icon(Icons.person_outline_rounded, color: Colors.black),
             label: 'Profil',
             activeIcon: Icon(Icons.person, color: Colors.deepPurple, size: 30),
           ),

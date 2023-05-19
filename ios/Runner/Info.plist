@@ -41,6 +41,10 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSCameraUsageDescription</key>
+<string>This app uses the camera to take photos for user profile pictures.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+<string>Acces to photo library to add a flower you need to take or select a picture for data</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
