@@ -4,13 +4,13 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/pages/favorites_strains.dart';
+import 'package:my_app/screens/favorites_strains.dart';
 import 'package:my_app/fonctionnalities/search_strain.dart';
-import 'package:my_app/pages/home_lists.dart';
-import 'package:my_app/pages/list_strains.dart';
+import 'package:my_app/screens/home_lists.dart';
+import 'package:my_app/screens/list_strains.dart';
 import 'firebase_options.dart';
 import 'authentification/auth_gate.dart';
-import 'pages/form_contribution.dart';
+import 'screens/form_contribution.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -130,34 +130,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   late final List<Widget> _widgetOptions = <Widget>[
-    const HomeLists(title: 'Welcome'),
+    const HomeLists(),
     const StrainsPage(
       title: 'All flowers',
     ),
     const FlowerForm(),
     const FavoritesPage(),
-    Container(
-      child: ProfileScreen(actions: [
-        SignedOutAction((context) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const AuthGate()),
-          );
-        })
-      ], children: [
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
-            alignment: Alignment.bottomLeft,
-          ),
-          label: const Text('Change Password'),
-          icon: const Icon(Icons.lock),
-          onPressed: () {
-            _showChangePasswordDialog(context);
-          },
+    ProfileScreen(actions: [
+      SignedOutAction((context) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AuthGate()),
+        );
+      })
+    ], children: [
+      TextButton.icon(
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.black,
+          alignment: Alignment.bottomLeft,
         ),
-      ]),
-    ),
+        label: const Text('Change Password'),
+        icon: const Icon(Icons.lock),
+        onPressed: () {
+          _showChangePasswordDialog(context);
+        },
+      ),
+    ]),
   ];
 
   void _onItemTapped(int index) {

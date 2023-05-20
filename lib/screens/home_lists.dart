@@ -4,7 +4,7 @@ import 'package:my_app/data/flowers_data.dart';
 import 'package:my_app/fonctionnalities/recommendation_list.dart';
 
 class HomeLists extends StatelessWidget {
-  const HomeLists({Key? key, required String title}) : super(key: key);
+  const HomeLists({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class HomeLists extends StatelessWidget {
                     ),
                   ],
                   image: const DecorationImage(
-                    image: AssetImage('assets/images/background-cbd.jpg'),
+                    image: AssetImage('assets/images/hello-marijane.jpg'),
                     fit: BoxFit.cover,
                     colorFilter:
                         ColorFilter.mode(Colors.black38, BlendMode.darken),
@@ -71,7 +71,7 @@ class HomeLists extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: SizedBox(
@@ -81,7 +81,7 @@ class HomeLists extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 142, 127, 218),
+                                color: Colors.white,
                                 shadows: [
                                   Shadow(
                                     blurRadius: 10.0,

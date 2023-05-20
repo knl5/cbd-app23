@@ -174,7 +174,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color.fromARGB(255, 85, 147, 135),
+                        backgroundColor: const Color.fromARGB(255, 85, 147, 135),
                       ),
                       child: const Text('Buy it'),
                     ))

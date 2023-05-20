@@ -47,8 +47,7 @@ dependencies:
   flutter_stripe: ^9.2.0
   image_picker: ^0.8.7+4
   firebase_storage: ^11.1.2
-  webview_flutter: ^4.2.0
-  transparent_image: ^2.0.1
+  rename_app: ^1.1.0
 
 dev_dependencies:
   flutter_test:

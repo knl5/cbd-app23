@@ -41,6 +41,7 @@ class FlowerList extends StatelessWidget {
                               color: const Color.fromARGB(255, 85, 147, 135),
                               width: 2,
                             ),
+                            color: Colors.white,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -65,10 +66,13 @@ class FlowerList extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
-                              Text(
-                                'Good Effects: ${doc['benefits']}',
-                                style: const TextStyle(color: Colors.black),
-                                textAlign: TextAlign.left,
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Good Effects: ${doc['benefits']}',
+                                  style: const TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                             ],
                           ),
@@ -123,23 +127,26 @@ class FlowerDetailsPage extends StatelessWidget {
                       left: 20,
                       right: 20,
                       top: 5,
-                      bottom: 15,
+                      bottom: 30,
                     ),
                     child: Text(
                       [flower['name'], flower['type']].join(' | '),
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-            ListTile(
-              title: const Text('Good Effects'),
-              subtitle: Text(flower['benefits']),
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: ListTile(
+                title: const Text('Good Effects'),
+                subtitle: Text(flower['benefits']),
+              ),
             ),
           ],
         ),

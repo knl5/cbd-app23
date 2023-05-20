@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/data/api_data.dart';
 import 'package:my_app/data/fetch_data.dart';
-import 'package:my_app/pages/details_strain.dart';
+import 'package:my_app/screens/details_strain.dart';
 
 class RecoList extends StatefulWidget {
   final String difficulty;
@@ -82,7 +82,7 @@ class _RecoListState extends State<RecoList> {
                             textAlign: TextAlign.left),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
                             'Good Effects: ${data[index].goodEffects}',
                             style: const TextStyle(color: Colors.white),
