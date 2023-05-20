@@ -53,12 +53,20 @@ class _RecoListState extends State<RecoList> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: index % 2 == 0
-                      ? const Color.fromARGB(255, 142, 127, 218)
-                      : const Color.fromARGB(255, 85, 147, 135),
+                      ? const Color.fromARGB(255, 232, 227, 240)
+                      : const Color.fromARGB(255, 226, 241, 218),
                 ),
                 width: 200.0,
                 child: Column(
                   children: [
+                    Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: const Text('8% CBD'),
+                        ),
+                      ],
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -78,17 +86,21 @@ class _RecoListState extends State<RecoList> {
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                fontFamily: 'SourceSansPro',
+                                color: Colors.black),
                             textAlign: TextAlign.left),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(10),
                           child: Text(
-                            'Good Effects: ${data[index].goodEffects}',
-                            style: const TextStyle(color: Colors.white),
+                            data[index].goodEffects,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'SourceSansPro'),
                             textAlign: TextAlign.left,
                           ),
                         ),
+                        const SizedBox(height: 30),
                       ],
                     )
                   ],

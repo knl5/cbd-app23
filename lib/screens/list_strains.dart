@@ -44,42 +44,79 @@ class _StrainsPageState extends State<StrainsPage> {
                   itemCount: data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
-                      height: 200,
-                      width: 300,
-                      child: Card(
-                        margin: const EdgeInsets.all(10),
-                        color: index % 3 == 0
-                            ? const Color.fromARGB(255, 142, 127, 218)
-                            : index % 3 == 1
-                                ? const Color.fromARGB(255, 85, 147, 135)
-                                : const Color.fromARGB(255, 57, 57, 57),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        child: ListTile(
-                            contentPadding: const EdgeInsets.all(10),
-                            title: Text(data[index].strain,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            subtitle: Text(data[index].goodEffects),
-                            textColor: Colors.black,
-                            isThreeLine: false,
-                            leading: Image(
-                                image: NetworkImage(
-                                    data[index].imgThumb ?? 'None'),
-                                fit: BoxFit.cover,
-                                colorBlendMode: BlendMode.dstATop,
-                                color: Colors.black.withOpacity(0.8),
-                                width: 100,
-                                height: 100),
+                        height: 200,
+                        width: 200,
+                        child: GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           DetailsStrain(data: data[index])));
-                            }),
-                      ),
-                    );
+                            },
+                            child: Card(
+                                elevation: 2,
+                                margin: const EdgeInsets.all(10),
+                                color: const Color.fromARGB(255, 239, 239, 238),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Container(
+                                          width: 100,
+                                          height: 100,
+                                          color: const Color.fromARGB(
+                                              255, 226, 241, 218),
+                                          child: Image(
+                                            image: NetworkImage(
+                                                data[index].imgThumb ?? 'None'),
+                                            fit: BoxFit.cover,
+                                            colorBlendMode: BlendMode.dstATop,
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        )),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(data[index].strain,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'SourceSansPro',
+                                            )),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                            [data[index].strainType, 'CBD']
+                                                .join(' • '),
+                                            style: const TextStyle(
+                                              fontFamily: 'SourceSansPro',
+                                            )),
+                                        Column(children: [
+                                          Container(
+                                            width: 220,
+                                            padding: const EdgeInsets.all(15),
+                                            child: Text(
+                                              data[index].goodEffects,
+                                              style: const TextStyle(
+                                                fontFamily: 'SourceSansPro',
+                                              ),
+                                              softWrap: true,
+                                            ),
+                                          ),
+                                        ]),
+                                      ],
+                                    )
+                                  ],
+                                ))));
                   });
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
@@ -90,12 +127,6 @@ class _StrainsPageState extends State<StrainsPage> {
       },
     ),
   ];
-
-  /* void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  } */
 
   void _showFilterBottomSheet() {
     showModalBottomSheet(

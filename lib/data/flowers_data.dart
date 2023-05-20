@@ -37,11 +37,7 @@ class FlowerList extends StatelessWidget {
                           height: 350.0,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 85, 147, 135),
-                              width: 2,
-                            ),
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 239, 239, 238),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -64,13 +60,16 @@ class FlowerList extends StatelessWidget {
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: 'SourceSansPro',
                                     color: Colors.black),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
-                                  'Good Effects: ${doc['benefits']}',
-                                  style: const TextStyle(color: Colors.black),
+                                  doc['benefits'],
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'SourceSansPro'),
                                   textAlign: TextAlign.left,
                                 ),
                               ),

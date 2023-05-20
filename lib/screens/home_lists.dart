@@ -41,28 +41,16 @@ class HomeLists extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
             child: Container(
                 decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 15,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
                   image: const DecorationImage(
                     image: AssetImage('assets/images/hello-marijane.jpg'),
                     fit: BoxFit.cover,
                     colorFilter:
-                        ColorFilter.mode(Colors.black38, BlendMode.darken),
+                        ColorFilter.mode(Colors.black26, BlendMode.darken),
                   ),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 142, 127, 218),
-                    width: 3,
-                  ),
                 ),
-                width: 250.0,
+                width: 250,
                 height: 250,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -98,7 +86,7 @@ class HomeLists extends StatelessWidget {
                           child: SizedBox(
                               width: 250,
                               child: Text(
-                                'Did you know ? CBD works well for anxiety !',
+                                'Did you know ? \nCBD works well for anxiety !',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -124,9 +112,10 @@ class HomeLists extends StatelessWidget {
             child: Text(
               '🍀 Last added by the community',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 142, 127, 218),
+                fontFamily: 'SourceSansPro',
+                color: Colors.black,
               ),
             ),
           ),
@@ -139,9 +128,10 @@ class HomeLists extends StatelessWidget {
             child: Text(
               '👀 Your recommendations',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 142, 127, 218),
+                fontFamily: 'SourceSansPro',
+                color: Colors.black,
               ),
             ),
           ),

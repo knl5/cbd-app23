@@ -58,8 +58,14 @@ class FavoritesPage extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final favorite = favorites[index];
               return ListTile(
-                  title: Text(favorite.strain),
-                  subtitle: Text(favorite.strainType),
+                  title: Text(favorite.strain,
+                      style: const TextStyle(
+                        fontFamily: 'SourceSansPro',
+                      )),
+                  subtitle: Text(favorite.strainType,
+                      style: const TextStyle(
+                        fontFamily: 'SourceSansPro',
+                      )),
                   onTap: () {
                     Navigator.push(
                         context,

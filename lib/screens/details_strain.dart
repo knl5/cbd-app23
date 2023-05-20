@@ -155,16 +155,18 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         [widget.data.strain, widget.data.strainType]
                             .join(' | '),
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'SourceSansPro',
                           color: Colors.black,
                         )),
                   ),
                 ),
                 Positioned(
-                    top: 0,
+                    top: 5,
                     right: 5,
-                    child: TextButton(
+                    child: TextButton.icon(
+                      icon: const Icon(Icons.shopping_cart),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -174,13 +176,20 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: const Color.fromARGB(255, 85, 147, 135),
+                        backgroundColor:
+                            const Color.fromARGB(255, 85, 147, 135),
                       ),
-                      child: const Text('Buy it'),
+                      label: const Text('Buy Now'),
                     ))
               ],
             ),
+            const ListTile(
+              title: Text('THC'),
+              horizontalTitleGap: 0,
+              subtitle: Text('<0.2%'),
+            ),
             ListTile(
+              
               title: const Text('Good Effects'),
               subtitle: Text(widget.data.goodEffects),
             ),
