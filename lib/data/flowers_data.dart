@@ -58,10 +58,11 @@ class FlowerList extends StatelessWidget {
                               Text(
                                 doc['name'],
                                 style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'SourceSansPro',
-                                    color: Colors.black),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'SourceSansPro',
+                                  color: Color.fromARGB(255, 127, 0, 255),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(10),

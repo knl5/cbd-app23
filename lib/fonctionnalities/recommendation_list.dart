@@ -52,9 +52,7 @@ class _RecoListState extends State<RecoList> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: index % 2 == 0
-                      ? const Color.fromARGB(255, 232, 227, 240)
-                      : const Color.fromARGB(255, 226, 241, 218),
+                  color: const Color.fromARGB(255, 239, 239, 238),
                 ),
                 width: 200.0,
                 child: Column(
@@ -84,10 +82,11 @@ class _RecoListState extends State<RecoList> {
                         const SizedBox(height: 30),
                         Text(data[index].strain,
                             style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'SourceSansPro',
-                                color: Colors.black),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'SourceSansPro',
+                              color: Color.fromARGB(255, 127, 0, 255),
+                            ),
                             textAlign: TextAlign.left),
                         const SizedBox(height: 10),
                         Padding(

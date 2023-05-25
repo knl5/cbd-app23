@@ -55,9 +55,8 @@ class AuthGate extends StatelessWidget {
                     try {
                       final UserCredential userCredential =
                           await signInWithGoogle();
-                      // Handle successful sign-in
                     } catch (e) {
-                      // Handle sign-in errors
+                      Text(e.toString());
                     }
                   },
                   child: const Text('Sign in with Google'),

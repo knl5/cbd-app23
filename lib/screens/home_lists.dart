@@ -14,29 +14,59 @@ class HomeLists extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20, top: 30),
+            padding: const EdgeInsets.only(left: 20, top: 20),
             child: Row(
               children: [
-                const Image(
-                    image: AssetImage('assets/images/Marijane.png'), width: 60),
                 const Text(
                   ' Hello, ',
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontFamily: 'SourceSansPro',
                   ),
                 ),
                 Text(
                   '${currentUser!.displayName}',
                   style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontFamily: 'SourceSansPro',
                   ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 140),
+                  child: Image(
+                      image: AssetImage('assets/images/Marijane.png'),
+                      width: 60),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.only(left: 20, bottom: 10),
+            child: Text('Explore',
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Color.fromARGB(255, 127, 0, 255),
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.only(left: 20, bottom: 20),
+            child: Text(
+              '🍀 Recent contribution',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SourceSansPro',
+                color: Color.fromARGB(255, 108, 142, 71),
+              ),
+            ),
+          ),
+          const Expanded(
+            child: FlowerList(),
+          ),
+          const SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
             child: Container(
@@ -48,10 +78,10 @@ class HomeLists extends StatelessWidget {
                         ColorFilter.mode(Colors.black26, BlendMode.darken),
                   ),
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                width: 250,
-                height: 250,
+                width: 200,
+                height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -70,13 +100,7 @@ class HomeLists extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 10.0,
-                                    color: Colors.black,
-                                    offset: Offset(5.0, 5.0),
-                                  ),
-                                ],
+                                fontFamily: 'SourceSansPro',
                               ),
                             ),
                           ),
@@ -86,18 +110,12 @@ class HomeLists extends StatelessWidget {
                           child: SizedBox(
                               width: 250,
                               child: Text(
-                                'Did you know ? \nCBD works well for anxiety !',
+                                '"Did you know ? \nCBD works well for anxiety !"',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 10.0,
-                                      color: Colors.black,
-                                      offset: Offset(5.0, 5.0),
-                                    ),
-                                  ],
+                                  fontFamily: 'SourceSansPro',
                                 ),
                               )),
                         ),
@@ -106,32 +124,16 @@ class HomeLists extends StatelessWidget {
                   ],
                 )),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const Padding(
-            padding: EdgeInsets.only(left: 20, bottom: 20),
+            padding: EdgeInsets.only(left: 30, bottom: 20),
             child: Text(
-              '🍀 Last added by the community',
+              '🌿 Your recommendations',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'SourceSansPro',
-                color: Colors.black,
-              ),
-            ),
-          ),
-          const Expanded(
-            child: FlowerList(),
-          ),
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.only(left: 30, bottom: 20, top: 20),
-            child: Text(
-              '👀 Your recommendations',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'SourceSansPro',
-                color: Colors.black,
+                color: Color.fromARGB(255, 108, 142, 71),
               ),
             ),
           ),
@@ -139,6 +141,7 @@ class HomeLists extends StatelessWidget {
             height: 350.0,
             child: RecoList(difficulty: 'Easy'),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );

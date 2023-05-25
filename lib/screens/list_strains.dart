@@ -92,6 +92,8 @@ class _StrainsPageState extends State<StrainsPage> {
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'SourceSansPro',
+                                              color: Color.fromARGB(
+                                                  255, 127, 0, 255),
                                             )),
                                         const SizedBox(height: 10),
                                         Text(

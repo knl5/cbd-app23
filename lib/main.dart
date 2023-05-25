@@ -182,7 +182,8 @@ class _MyHomePageState extends State<MyHomePage> {
           widget.title,
           style: GoogleFonts.comfortaa(),
         ),
-        backgroundColor: Colors.black87,
+        elevation: 6,
+        backgroundColor: const Color.fromARGB(255, 127, 0, 255),
         foregroundColor: Colors.white,
       ),
       body: Center(
@@ -195,32 +196,33 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
             activeIcon: Icon(
               Icons.home_filled,
-              color: Colors.deepPurple,
+              color: Color.fromARGB(255, 127, 0, 255),
               size: 30,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list, color: Colors.black),
             label: 'Strains',
-            activeIcon:
-                Icon(Icons.list_rounded, color: Colors.deepPurple, size: 30),
+            activeIcon: Icon(Icons.list_rounded,
+                color: Color.fromARGB(255, 127, 0, 255), size: 30),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outline_rounded, color: Colors.black),
             label: 'Add',
             activeIcon: Icon(Icons.add_circle_sharp,
-                color: Colors.deepPurple, size: 30),
+                color: Color.fromARGB(255, 127, 0, 255), size: 30),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border_outlined, color: Colors.black),
             label: 'Favorites',
-            activeIcon:
-                Icon(Icons.favorite, color: Colors.deepPurple, size: 30),
+            activeIcon: Icon(Icons.favorite,
+                color: Color.fromARGB(255, 127, 0, 255), size: 30),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline_rounded, color: Colors.black),
             label: 'Profil',
-            activeIcon: Icon(Icons.person, color: Colors.deepPurple, size: 30),
+            activeIcon: Icon(Icons.person,
+                color: Color.fromARGB(255, 127, 0, 255), size: 30),
           ),
         ],
         currentIndex: _selectedIndex,

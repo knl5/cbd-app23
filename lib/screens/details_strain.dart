@@ -189,7 +189,6 @@ class _DetailsStrainState extends State<DetailsStrain> {
               subtitle: Text('<0.2%'),
             ),
             ListTile(
-              
               title: const Text('Good Effects'),
               subtitle: Text(widget.data.goodEffects),
             ),
@@ -215,7 +214,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 85, 147, 135)),
+                          color: Color.fromARGB(255, 127, 0, 255)),
                     ),
                   ),
                   StreamBuilder<QuerySnapshot>(
@@ -244,11 +243,16 @@ class _DetailsStrainState extends State<DetailsStrain> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              'Average Rating: $averageRating',
-                            ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text(
+                                  'Rate: $averageRating/5',
+                                ),
+                              ),
+                              const Icon(Icons.star, color: Colors.orange),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           ListView.builder(
@@ -257,11 +261,23 @@ class _DetailsStrainState extends State<DetailsStrain> {
                             itemCount: reviews.length,
                             itemBuilder: (context, index) {
                               final review = reviews[index];
-                              return ListTile(
-                                title: Text(review.userName),
-                                subtitle: Column(
+                              return Card(
+                                margin: const EdgeInsets.all(10),
+                                color: const Color.fromARGB(255, 239, 239, 238),
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text(
+                                      review.userName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 18,
+                                    ),
                                     Row(
                                       children: [
                                         Text(review.rating.toString()),
@@ -301,7 +317,9 @@ class _DetailsStrainState extends State<DetailsStrain> {
                   child: Text(
                     'Add a Review',
                     style: TextStyle(
-                        fontSize: 16, color: Color.fromARGB(255, 85, 147, 135)),
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 85, 147, 135),
+                        fontFamily: 'SourceSansPro'),
                   ),
                 ),
                 Form(
@@ -367,6 +385,7 @@ class _DetailsStrainState extends State<DetailsStrain> {
                           decoration: const InputDecoration(
                             labelText: 'Describe your experience',
                             border: OutlineInputBorder(),
+                            labelStyle: TextStyle(fontFamily: 'SourceSansPro'),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -381,6 +400,13 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         padding: const EdgeInsets.all(10.0),
                         child: ElevatedButton(
                           onPressed: _submitReview,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 127, 0, 255),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                            ),
+                          ),
                           child: const Text('Submit'),
                         ),
                       )

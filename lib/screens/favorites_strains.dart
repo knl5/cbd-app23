@@ -61,6 +61,7 @@ class FavoritesPage extends StatelessWidget {
                   title: Text(favorite.strain,
                       style: const TextStyle(
                         fontFamily: 'SourceSansPro',
+                        color: Color.fromARGB(255, 127, 0, 255),
                       )),
                   subtitle: Text(favorite.strainType,
                       style: const TextStyle(

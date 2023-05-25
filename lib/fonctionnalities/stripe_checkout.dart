@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+import '../secrets_key.dart';
+
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
 
@@ -91,15 +93,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
             const SizedBox(height: 16),
-            Text('Total Cost: \$${calculateCost()}'),
+            Text('Total Cost: ${calculateCost()}€'),
             const SizedBox(height: 16),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.deepPurple,
-                backgroundColor: Colors.white,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 127, 0, 255),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  side: const BorderSide(color: Colors.deepPurple),
+                  borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
               child: const Text('Checkout'),
@@ -220,8 +220,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization':
-              'Bearer sk_test_51N4KheG6sHh2uNYccgAa50f3OtyOqug3X1zpepEqgkYfJ8MPTaySIyVXj7SeVHafWgYCY51jUBggCknG7l1gU8Ii00Sk5vdOzE',
+          'Authorization': 'Bearer $apistripe',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,
