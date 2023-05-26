@@ -59,7 +59,7 @@ class _StrainsPageState extends State<StrainsPage> {
                                 margin: const EdgeInsets.all(10),
                                 color: const Color.fromARGB(255, 239, 239, 238),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
+                                    borderRadius: BorderRadius.circular(20)),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,

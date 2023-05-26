@@ -95,43 +95,51 @@ class ReviewStrain extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final review = reviews[index];
                     return Card(
-                      margin: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(5),
                       color: const Color.fromARGB(255, 239, 239, 238),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            review.userName,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              review.userName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 18,
-                          ),
-                          Row(
-                            children: [
-                              Text(review.rating.toString()),
-                              const Icon(Icons.star, color: Colors.orange),
-                              const SizedBox(width: 14),
-                              Text.rich(
-                                TextSpan(
-                                  text: ' " ',
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              children: [
+                                Row(
                                   children: [
-                                    TextSpan(
-                                      text: review.text,
-                                    ),
-                                    const TextSpan(
-                                      text: ' " ',
+                                    Text(review.rating.toString()),
+                                    const Icon(Icons.star,
+                                        color: Colors.orange),
+                                    const SizedBox(width: 8),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: ' " ',
+                                        children: [
+                                          TextSpan(
+                                            text: review.text,
+                                          ),
+                                          const TextSpan(
+                                            text: ' " ',
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

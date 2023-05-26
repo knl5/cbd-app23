@@ -17,6 +17,7 @@ class _FormReviewState extends State<FormReview> {
   final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
   int _rating = 0;
+  bool _showForm = false;
 
   void _submitReview() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -55,6 +56,7 @@ class _FormReviewState extends State<FormReview> {
       _textController.clear();
       setState(() {
         _rating = 0;
+        _showForm = false;
       });
     }
   }
@@ -64,106 +66,121 @@ class _FormReviewState extends State<FormReview> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 10.0),
-          child: Text(
-            'Add a Review',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 85, 147, 135),
-              fontFamily: 'SourceSansPro',
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _showForm = true;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 85, 147, 135),
+              ),
+              onPressed: () {
+                setState(() {
+                  _showForm = true;
+                });
+              },
+              label: const Text('Add a review',
+                  style: TextStyle(fontSize: 16, fontFamily: 'SourceSansPro')),
+              icon: const Icon(Icons.add_comment),
             ),
           ),
         ),
-        Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.star),
-                    color: _rating >= 1 ? Colors.orange : Colors.grey,
-                    onPressed: () {
-                      setState(() {
-                        _rating = 1;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.star),
-                    color: _rating >= 2 ? Colors.orange : Colors.grey,
-                    onPressed: () {
-                      setState(() {
-                        _rating = 2;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.star),
-                    color: _rating >= 3 ? Colors.orange : Colors.grey,
-                    onPressed: () {
-                      setState(() {
-                        _rating = 3;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.star),
-                    color: _rating >= 4 ? Colors.orange : Colors.grey,
-                    onPressed: () {
-                      setState(() {
-                        _rating = 4;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.star),
-                    color: _rating >= 5 ? Colors.orange : Colors.grey,
-                    onPressed: () {
-                      setState(() {
-                        _rating = 5;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 2.0),
-                child: TextFormField(
-                  controller: _textController,
-                  decoration: const InputDecoration(
-                    labelText: 'Describe your experience',
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(fontFamily: 'SourceSansPro'),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a review';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ElevatedButton(
-                  onPressed: _submitReview,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 127, 0, 255),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
+        if (_showForm)
+          Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.star),
+                      color: _rating >= 1 ? Colors.orange : Colors.grey,
+                      onPressed: () {
+                        setState(() {
+                          _rating = 1;
+                        });
+                      },
                     ),
-                  ),
-                  child: const Text('Submit'),
+                    IconButton(
+                      icon: const Icon(Icons.star),
+                      color: _rating >= 2 ? Colors.orange : Colors.grey,
+                      onPressed: () {
+                        setState(() {
+                          _rating = 2;
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.star),
+                      color: _rating >= 3 ? Colors.orange : Colors.grey,
+                      onPressed: () {
+                        setState(() {
+                          _rating = 3;
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.star),
+                      color: _rating >= 4 ? Colors.orange : Colors.grey,
+                      onPressed: () {
+                        setState(() {
+                          _rating = 4;
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.star),
+                      color: _rating >= 5 ? Colors.orange : Colors.grey,
+                      onPressed: () {
+                        setState(() {
+                          _rating = 5;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-              )
-            ],
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8, right: 8, bottom: 2.0),
+                  child: TextFormField(
+                    controller: _textController,
+                    decoration: const InputDecoration(
+                      labelText: 'Describe your experience',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontFamily: 'SourceSansPro'),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a review';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    onPressed: _submitReview,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 127, 0, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    child: const Text('Submit'),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
