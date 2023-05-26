@@ -8,6 +8,7 @@ import 'package:my_app/screens/favorites_strains.dart';
 import 'package:my_app/fonctionnalities/search_strain.dart';
 import 'package:my_app/screens/home_lists.dart';
 import 'package:my_app/screens/list_strains.dart';
+import 'package:my_app/screens/welcome_screen.dart';
 import 'firebase_options.dart';
 import 'authentification/auth_gate.dart';
 import 'screens/form_contribution.dart';
@@ -47,7 +48,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
       ),
-      home: const AuthGate(),
+      home: WelcomeScreen(
+        child: const AuthGate(),
+      ),
     );
   }
 }
