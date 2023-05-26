@@ -56,69 +56,76 @@ class _StrainsPageState extends State<StrainsPage> {
                             },
                             child: Card(
                                 elevation: 2,
-                                margin: const EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(20),
                                 color: const Color.fromARGB(255, 239, 239, 238),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: Container(
-                                          width: 100,
-                                          height: 100,
-                                          color: const Color.fromARGB(
-                                              255, 226, 241, 218),
-                                          child: Image(
-                                            image: NetworkImage(
-                                                data[index].imgThumb ?? 'None'),
-                                            fit: BoxFit.cover,
-                                            colorBlendMode: BlendMode.dstATop,
-                                            color:
-                                                Colors.black.withOpacity(0.8),
-                                          ),
-                                        )),
-                                    Column(
+                                child: Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(data[index].strain,
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'SourceSansPro',
-                                              color: Color.fromARGB(
-                                                  255, 127, 0, 255),
-                                            )),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                            [data[index].strainType, 'CBD']
-                                                .join(' • '),
-                                            style: const TextStyle(
-                                              fontFamily: 'SourceSansPro',
-                                            )),
-                                        Column(children: [
-                                          Container(
-                                            width: 220,
-                                            padding: const EdgeInsets.all(15),
-                                            child: Text(
-                                              data[index].goodEffects,
-                                              style: const TextStyle(
-                                                fontFamily: 'SourceSansPro',
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Container(
+                                              width: 100,
+                                              height: 100,
+                                              color: const Color.fromARGB(
+                                                  255, 226, 241, 218),
+                                              child: Image(
+                                                image: NetworkImage(
+                                                    data[index].imgThumb ??
+                                                        'None'),
+                                                fit: BoxFit.cover,
+                                                colorBlendMode:
+                                                    BlendMode.dstATop,
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
                                               ),
-                                              softWrap: true,
-                                            ),
-                                          ),
-                                        ]),
+                                            )),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(data[index].strain,
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'SourceSansPro',
+                                                  color: Color.fromARGB(
+                                                      255, 127, 0, 255),
+                                                )),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                [data[index].strainType, 'CBD']
+                                                    .join(' • '),
+                                                style: const TextStyle(
+                                                  fontFamily: 'SourceSansPro',
+                                                )),
+                                            Column(children: [
+                                              Container(
+                                                width: 220,
+                                                padding:
+                                                    const EdgeInsets.all(15),
+                                                child: Text(
+                                                  data[index].goodEffects,
+                                                  style: const TextStyle(
+                                                    fontFamily: 'SourceSansPro',
+                                                  ),
+                                                  softWrap: true,
+                                                ),
+                                              ),
+                                            ]),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ))));
+                                    )))));
                   });
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());

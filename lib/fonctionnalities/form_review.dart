@@ -174,6 +174,10 @@ class _FormReviewState extends State<FormReview> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32.0),
                       ),
+                      textStyle: const TextStyle(
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 16,
+                      ),
                     ),
                     child: const Text('Submit'),
                   ),

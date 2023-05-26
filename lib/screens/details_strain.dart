@@ -40,6 +40,46 @@ class _DetailsStrainState extends State<DetailsStrain> {
     }
   }
 
+  List<Color> getGaugeColors() {
+    List<String> goodEffectsList = widget.data.goodEffects.split(',');
+    int effectCount = goodEffectsList.length;
+    List<Color> colors = [];
+    if (effectCount <= 3) {
+      colors = [
+        const Color.fromARGB(255, 127, 0, 255),
+        const Color.fromARGB(195, 128, 0, 255),
+        const Color.fromARGB(139, 128, 0, 255)
+      ];
+    } else if (effectCount <= 4) {
+      colors = [
+        const Color.fromARGB(255, 127, 0, 255),
+        const Color.fromARGB(195, 128, 0, 255),
+        const Color.fromARGB(139, 128, 0, 255),
+        const Color.fromARGB(95, 128, 0, 255),
+      ];
+    } else {
+      colors = [
+        const Color.fromARGB(255, 127, 0, 255),
+        const Color.fromARGB(195, 128, 0, 255),
+        const Color.fromARGB(139, 128, 0, 255),
+        const Color.fromARGB(95, 128, 0, 255),
+        const Color.fromARGB(59, 128, 0, 255),
+      ];
+    }
+
+    // Adjust the colors to evenly distribute them across the gauge
+    double colorStep = 1 / (colors.length - 1);
+    List<Color> adjustedColors = [];
+    for (int i = 0; i < colors.length - 1; i++) {
+      double progress = i * colorStep;
+      Color? color = Color.lerp(colors[i], colors[i + 1], progress);
+      adjustedColors.add(color!);
+    }
+    adjustedColors.add(colors.last);
+
+    return adjustedColors;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,12 +193,14 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    const ListTile(
-                      title: Text('THC'),
-                      subtitle: Text('<0.2%'),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: const [
+                        Text('THC '),
+                        Text('< 0.2%'),
+                      ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     const Text(
                       'Goods Effects:',
                       style: TextStyle(
@@ -166,14 +208,32 @@ class _DetailsStrainState extends State<DetailsStrain> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     Text(
                       widget.data.goodEffects,
                       style: const TextStyle(fontSize: 14),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    CustomPaint(
+                      painter: GaugePainter(
+                        colors: getGaugeColors(),
+                        value: widget.data.goodEffects.split(',').length,
+                      ),
+                      child: Container(
+                        constraints: const BoxConstraints(
+                          maxWidth: 240,
+                          maxHeight: 10,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
                     const SizedBox(height: 20),
                     ReviewStrain(data: widget.data),
+                    const SizedBox(height: 2),
                     FormReview(data: widget.data),
                   ],
                 ),
@@ -183,5 +243,35 @@ class _DetailsStrainState extends State<DetailsStrain> {
         ),
       ),
     );
+  }
+}
+
+class GaugePainter extends CustomPainter {
+  final List<Color> colors;
+  final int value;
+
+  GaugePainter({required this.colors, required this.value});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double sectionWidth = size.width / (colors.length - 1);
+    for (int i = 0; i < colors.length - 1; i++) {
+      double startX = i * sectionWidth;
+      double endX = (i + 1) * sectionWidth;
+      Rect sectionRect = Rect.fromLTRB(startX, 0, endX, size.height);
+      Paint sectionPaint = Paint()..color = colors[i];
+      canvas.drawRect(sectionRect, sectionPaint);
+    }
+
+    // Calculate the value indicator position
+    double indicatorX = value * sectionWidth;
+    Paint indicatorPaint = Paint()..color = colors.last;
+    canvas.drawRect(
+        Rect.fromLTRB(indicatorX, 0, size.width, size.height), indicatorPaint);
+  }
+
+  @override
+  bool shouldRepaint(GaugePainter oldDelegate) {
+    return oldDelegate.colors != colors || oldDelegate.value != value;
   }
 }

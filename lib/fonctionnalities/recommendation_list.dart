@@ -58,14 +58,6 @@ class _RecoListState extends State<RecoList> {
                 child: Column(
                   children: [
                     Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: const Text('8% CBD'),
-                        ),
-                      ],
-                    ),
-                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const SizedBox(height: 30),
@@ -79,7 +71,7 @@ class _RecoListState extends State<RecoList> {
                             width: 150,
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20),
                         Text(data[index].strain,
                             style: const TextStyle(
                               fontSize: 20,
@@ -99,6 +91,8 @@ class _RecoListState extends State<RecoList> {
                             textAlign: TextAlign.left,
                           ),
                         ),
+                        const SizedBox(height: 5),
+                        const Text('8% CBD'),
                         const SizedBox(height: 30),
                       ],
                     )
