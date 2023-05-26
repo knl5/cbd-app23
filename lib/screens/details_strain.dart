@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
 import '../fonctionnalities/review_strain.dart';
 import '../fonctionnalities/stripe_checkout.dart';
+import '../fonctionnalities/form_review.dart';
 
 class DetailsStrain extends StatefulWidget {
   final DataStrains data;
@@ -17,50 +18,6 @@ class DetailsStrain extends StatefulWidget {
 
 class _DetailsStrainState extends State<DetailsStrain> {
   bool isFavorited = false;
-  final _formKey = GlobalKey<FormState>();
-  final _textController = TextEditingController();
-  int _rating = 0;
-
-  void _submitReview() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Redirect the user to the login page if they are not logged in
-      // You can add your own logic here for handling user authentication
-      return;
-    }
-
-    final strainId = widget.data.id.toString();
-    final existingReview = await FirebaseFirestore.instance
-        .collection('strains')
-        .doc(strainId)
-        .collection('reviews')
-        .where('userId', isEqualTo: user.uid)
-        .limit(1)
-        .get();
-    if (existingReview.docs.isNotEmpty) {
-      // The user has already made a review for this strain
-      // You can add your own logic here for handling this case
-      return;
-    }
-    if (_formKey.currentState!.validate()) {
-      final review = Review(
-        userId: user.uid,
-        userName: user.displayName ?? 'Anonymous',
-        strainId: strainId,
-        text: _textController.text,
-        rating: _rating,
-      );
-      await FirebaseFirestore.instance
-          .collection('strains')
-          .doc(strainId)
-          .collection('reviews')
-          .add(review.toMap());
-      _textController.clear();
-      setState(() {
-        _rating = 0;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -89,332 +46,123 @@ class _DetailsStrainState extends State<DetailsStrain> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Strain Details',
+          widget.data.strain,
           style: GoogleFonts.comfortaa(),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60),
-                  ),
-                  child: Image(
-                      image: NetworkImage(widget.data.imgThumb ?? 'None')),
-                ),
-                IconButton(
-                  icon: Icon(
-                    isFavorited ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorited ? Colors.red : null,
-                  ),
-                  onPressed: () async {
-                    final User? user = FirebaseAuth.instance.currentUser;
-                    if (user == null) {
-                      // Redirect the user to the login page if they are not logged in
-                      // You can add your own logic here for handling user authentication
-                      return;
-                    }
-                    setState(() {
-                      isFavorited = !isFavorited;
-                    });
-                    final userId = user.uid;
-                    final data = widget.data.toMap();
-                    if (isFavorited) {
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(userId)
-                          .collection('favorites')
-                          .doc(widget.data.id.toString())
-                          .set(data);
-                    } else {
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(userId)
-                          .collection('favorites')
-                          .doc(widget.data.id.toString())
-                          .delete();
-                    }
-                  },
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 5,
-                      bottom: 30,
-                    ),
-                    child: Text(
-                        [widget.data.strain, widget.data.strainType]
-                            .join(' | '),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'SourceSansPro',
-                          color: Colors.black,
-                        )),
-                  ),
-                ),
-                Positioned(
-                    top: 5,
-                    right: 5,
-                    child: TextButton.icon(
-                      icon: const Icon(Icons.shopping_cart),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CheckoutPage()),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor:
-                            const Color.fromARGB(255, 85, 147, 135),
-                      ),
-                      label: const Text('Buy Now'),
-                    ))
-              ],
-            ),
-            const ListTile(
-              title: Text('THC'),
-              horizontalTitleGap: 0,
-              subtitle: Text('<0.2%'),
-            ),
-            ListTile(
-              title: const Text('Good Effects'),
-              subtitle: Text(widget.data.goodEffects),
-            ),
-            ListTile(
-              title: const Text('Side Effects'),
-              subtitle: Text(widget.data.sideEffects ?? 'None'),
-            ),
-            const SizedBox(height: 16),
-
-            // Reviews
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Divider(thickness: 1, color: Colors.black),
-            ),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0, top: 4, bottom: 8),
-                    child: Text(
-                      'Reviews',
-                      style: TextStyle(
-                          fontSize: 20,
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.data.strain,
+                        style: GoogleFonts.comfortaa(
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 127, 0, 255)),
-                    ),
-                  ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('strains')
-                        .doc(widget.data.id.toString())
-                        .collection('reviews')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final reviews = snapshot.data!.docs
-                          .map((doc) => Review(
-                                userId: doc['userId'],
-                                strainId: doc['strainId'],
-                                userName: doc['userName'],
-                                text: doc['text'],
-                                rating: doc['rating'],
-                              ))
-                          .toList();
-                      final totalRating = reviews.fold<int>(
-                          0, (sum, review) => sum + review.rating);
-                      final averageRating =
-                          reviews.isEmpty ? 0 : totalRating ~/ reviews.length;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  'Rate: $averageRating/5',
-                                ),
-                              ),
-                              const Icon(Icons.star, color: Colors.orange),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: reviews.length,
-                            itemBuilder: (context, index) {
-                              final review = reviews[index];
-                              return Card(
-                                margin: const EdgeInsets.all(10),
-                                color: const Color.fromARGB(255, 239, 239, 238),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      review.userName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 18,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(review.rating.toString()),
-                                        const Icon(Icons.star,
-                                            color: Colors.orange),
-                                        const SizedBox(width: 14),
-                                        Text.rich(
-                                          TextSpan(
-                                            text: ' " ',
-                                            children: [
-                                              TextSpan(
-                                                text: review.text,
-                                              ),
-                                              const TextSpan(
-                                                text: ' " ',
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ]),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    'Add a Review',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromARGB(255, 85, 147, 135),
-                        fontFamily: 'SourceSansPro'),
-                  ),
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.star),
-                            color: _rating >= 1 ? Colors.orange : Colors.grey,
-                            onPressed: () {
-                              setState(() {
-                                _rating = 1;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.star),
-                            color: _rating >= 2 ? Colors.orange : Colors.grey,
-                            onPressed: () {
-                              setState(() {
-                                _rating = 2;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.star),
-                            color: _rating >= 3 ? Colors.orange : Colors.grey,
-                            onPressed: () {
-                              setState(() {
-                                _rating = 3;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.star),
-                            color: _rating >= 4 ? Colors.orange : Colors.grey,
-                            onPressed: () {
-                              setState(() {
-                                _rating = 4;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.star),
-                            color: _rating >= 5 ? Colors.orange : Colors.grey,
-                            onPressed: () {
-                              setState(() {
-                                _rating = 5;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, bottom: 2.0),
-                        child: TextFormField(
-                          controller: _textController,
-                          decoration: const InputDecoration(
-                            labelText: 'Describe your experience',
-                            border: OutlineInputBorder(),
-                            labelStyle: TextStyle(fontFamily: 'SourceSansPro'),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a review';
-                            }
-                            return null;
-                          },
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ElevatedButton(
-                          onPressed: _submitReview,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 127, 0, 255),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ),
-                          child: const Text('Submit'),
+                      IconButton(
+                        icon: Icon(
+                          isFavorited ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorited ? Colors.red : null,
                         ),
-                      )
+                        onPressed: () async {
+                          final User? user = FirebaseAuth.instance.currentUser;
+                          if (user == null) {
+                            // Redirect the user to the login page if they are not logged in
+                            // You can add your own logic here for handling user authentication
+                            return;
+                          }
+                          setState(() {
+                            isFavorited = !isFavorited;
+                          });
+                          final userId = user.uid;
+                          final data = widget.data.toMap();
+                          if (isFavorited) {
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(userId)
+                                .collection('favorites')
+                                .doc(widget.data.id.toString())
+                                .set(data);
+                          } else {
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(userId)
+                                .collection('favorites')
+                                .doc(widget.data.id.toString())
+                                .delete();
+                          }
+                        },
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                            top: 5,
+                            bottom: 30,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            )
+                  Positioned(
+                      top: 5,
+                      right: 10,
+                      child: TextButton.icon(
+                        icon: const Icon(Icons.shopping_cart),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CheckoutPage()),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              const Color.fromARGB(255, 85, 147, 135),
+                        ),
+                        label: const Text('Buy'),
+                      )),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Type: ${widget.data.strainType}',
+                    style: GoogleFonts.comfortaa(fontSize: 16),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Description:',
+                    style: GoogleFonts.comfortaa(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.data.goodEffects,
+                    style: GoogleFonts.comfortaa(fontSize: 14),
+                  ),
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  ReviewStrain(data: widget.data),
+                  const SizedBox(height: 20),
+                  FormReview(data: widget.data),
+                ],
+              ),
+            ),
           ],
         ),
       ),

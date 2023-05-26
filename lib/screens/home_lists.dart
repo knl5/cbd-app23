@@ -71,6 +71,16 @@ class HomeLists extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
             child: Container(
                 decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 8.0,
+                        spreadRadius: 1.0,
+                        offset: Offset(
+                          0, // Move to right 7.0 horizontally
+                          8.0, // Move to bottom 8.0 Vertically
+                        ))
+                  ],
                   image: const DecorationImage(
                     image: AssetImage('assets/images/hello-marijane.jpg'),
                     fit: BoxFit.cover,

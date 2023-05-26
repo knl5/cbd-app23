@@ -51,7 +51,7 @@ class _RecoListState extends State<RecoList> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(25),
                   color: const Color.fromARGB(255, 239, 239, 238),
                 ),
                 width: 200.0,

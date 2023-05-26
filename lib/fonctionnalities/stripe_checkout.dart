@@ -184,6 +184,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("paid successfully")));
+        _usernameController.clear();
+        _streetController.clear();
+        _cityController.clear();
+        _countryController.clear();
+        _zipCodeController.clear();
+        _quantityController.clear();
         paymentIntent = null;
       }).onError((error, stackTrace) {
         showDialog(

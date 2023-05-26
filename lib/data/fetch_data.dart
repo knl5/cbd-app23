@@ -24,7 +24,7 @@ Future<List<DataStrains>> fetchDataFiltered(String difficulty) async {
   var url =
       Uri.parse('https://weed-strain1.p.rapidapi.com/?difficulty=$difficulty');
   final response = await http.get(url, headers: {
-    "X-RapidAPI-Key": apikey,
+    "X-RapidAPI-Key": apikey2,
   });
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);

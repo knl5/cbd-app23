@@ -93,7 +93,7 @@ class _FlowerFormState extends State<FlowerForm> {
             children: [
               const Text('Add a new flower/product',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'SourceSansPro')),
               const SizedBox(height: 18),
               GestureDetector(
                 onTap: _selectImage,

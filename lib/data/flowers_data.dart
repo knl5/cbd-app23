@@ -36,7 +36,7 @@ class FlowerList extends StatelessWidget {
                         child: Container(
                           height: 350.0,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(25),
                             color: const Color.fromARGB(255, 239, 239, 238),
                           ),
                           child: Column(
