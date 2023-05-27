@@ -65,3 +65,5 @@ In `ios/Runner` folder add your `GoogleService-Info.plist`.
     
 ##### Check out Flutter’s online [documentation](http://flutter.io/) for help getting start with your Flutter project.
 ##### Project2023-ECVDigital   
+
+![logo-app](https://github.com/knl5/cbd-app23/blob/6b38990aa2f240f5b9d1dd82986ad8ed21d0e864/assets/images/Marijane.png)
