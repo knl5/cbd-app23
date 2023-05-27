@@ -1,10 +1,14 @@
-# my_CBDapp
+# Marijane CBD App
 
 School project to validate my degree. Creation of a mobile application with Flutter and Firebase.
 This an app to inform but above all generalize, popularized CBD (cannabidiol) and its consumption.
 
 # Features
-* Firebase Authentication with FirebaseUI
+* Firebase Authentication with FlutterFire
+* Get the data form an API (RapidApi)
+* Checkout with Stripe API (flutter_stripe)
+* Native fonctionnality : Take a picture with the phone or choose one in the phone's library
+* Store data with firebase_storage and cloud_firestore
 
 ## Getting Started
 **Note:** Make sure your Flutter environment is [setup](https://flutter.io/getting-started/).
@@ -59,4 +63,5 @@ In `ios/Runner` folder add your `GoogleService-Info.plist`.
     Run the following command in your terminal.
     $ flutter run
     
-##### Check out Flutter’s online [documentation](http://flutter.io/) for help getting start with your Flutter project.     
+##### Check out Flutter’s online [documentation](http://flutter.io/) for help getting start with your Flutter project.
+##### Project2023-ECVDigital   
