@@ -48,8 +48,8 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
       ),
-      home: WelcomeScreen(
-        child: const AuthGate(),
+      home: const WelcomeScreen(
+        child: AuthGate(),
       ),
     );
   }
@@ -110,11 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 try {
                   await currentUser?.updatePassword(newPasswordController.text);
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Password changed successfully'),
                     ),
                   );
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(

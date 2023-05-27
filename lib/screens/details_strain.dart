@@ -12,6 +12,7 @@ class DetailsStrain extends StatefulWidget {
   const DetailsStrain({Key? key, required this.data}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _DetailsStrainState createState() => _DetailsStrainState();
 }
 

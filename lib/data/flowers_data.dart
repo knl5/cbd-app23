@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final contributionList = FirebaseFirestore.instance;
 Future<QuerySnapshot> flowers = contributionList.collection('flowers').get();
@@ -101,51 +102,73 @@ class FlowerDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(flower['name']),
+        title: Text(
+          flower['name'],
+          style: GoogleFonts.comfortaa(),
+        ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Stack(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60),
-                  ),
+              children: [
+                SizedBox(
+                  height: 350,
+                  width: double.infinity,
                   child: Image(
-                    image: NetworkImage(flower['image_url']),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 5,
-                      bottom: 30,
-                    ),
-                    child: Text(
-                      [flower['name'], flower['type']].join(' | '),
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                    image: NetworkImage(flower['image_url'] ?? 'None'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: ListTile(
-                title: const Text('Good Effects'),
-                subtitle: Text(flower['benefits']),
+            Container(
+              transform: Matrix4.translationValues(0, -25, 0),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      flower['name'],
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'SourceSansPro',
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: const [
+                        Text('THC '),
+                        Text('< 0.2%'),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Goods Effects:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      flower['benefits'],
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
           ],

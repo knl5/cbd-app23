@@ -8,6 +8,7 @@ class RecoList extends StatefulWidget {
   const RecoList({super.key, required this.difficulty});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RecoListState createState() => _RecoListState();
 }
 

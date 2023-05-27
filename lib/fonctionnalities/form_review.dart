@@ -10,6 +10,7 @@ class FormReview extends StatefulWidget {
   const FormReview({Key? key, required this.data}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _FormReviewState createState() => _FormReviewState();
 }
 
@@ -101,7 +102,8 @@ class _FormReviewState extends State<FormReview> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.star),
-                      color: _rating >= 1 ? Colors.orange : Colors.grey,
+                      iconSize: 20,
+                      color: _rating >= 1 ? Colors.black : Colors.grey,
                       onPressed: () {
                         setState(() {
                           _rating = 1;
@@ -110,7 +112,8 @@ class _FormReviewState extends State<FormReview> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.star),
-                      color: _rating >= 2 ? Colors.orange : Colors.grey,
+                      iconSize: 20,
+                      color: _rating >= 2 ? Colors.black : Colors.grey,
                       onPressed: () {
                         setState(() {
                           _rating = 2;
@@ -119,7 +122,8 @@ class _FormReviewState extends State<FormReview> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.star),
-                      color: _rating >= 3 ? Colors.orange : Colors.grey,
+                      iconSize: 20,
+                      color: _rating >= 3 ? Colors.black : Colors.grey,
                       onPressed: () {
                         setState(() {
                           _rating = 3;
@@ -128,7 +132,8 @@ class _FormReviewState extends State<FormReview> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.star),
-                      color: _rating >= 4 ? Colors.orange : Colors.grey,
+                      iconSize: 20,
+                      color: _rating >= 4 ? Colors.black : Colors.grey,
                       onPressed: () {
                         setState(() {
                           _rating = 4;
@@ -137,7 +142,8 @@ class _FormReviewState extends State<FormReview> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.star),
-                      color: _rating >= 5 ? Colors.orange : Colors.grey,
+                      iconSize: 20,
+                      color: _rating >= 5 ? Colors.black : Colors.grey,
                       onPressed: () {
                         setState(() {
                           _rating = 5;

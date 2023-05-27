@@ -40,7 +40,7 @@ class ReviewStrain extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(left: 10.0, top: 4, bottom: 8),
+          padding: EdgeInsets.only(left: 5.0, top: 4, bottom: 20),
           child: Text(
             'Reviews',
             style: TextStyle(
@@ -78,16 +78,30 @@ class ReviewStrain extends StatelessWidget {
               children: [
                 Row(
                   children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 85, 147, 135),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child:
+                          const Icon(Icons.star, color: Colors.white, size: 20),
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding: const EdgeInsets.only(left: 5.0),
                       child: Text(
-                        'Rate: $averageRating/5',
+                        '$averageRating/5',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                    const Icon(Icons.star, color: Colors.orange),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -95,10 +109,10 @@ class ReviewStrain extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final review = reviews[index];
                     return Card(
-                      margin: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(2),
                       color: const Color.fromARGB(255, 239, 239, 238),
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -119,7 +133,7 @@ class ReviewStrain extends StatelessWidget {
                                   children: [
                                     Text(review.rating.toString()),
                                     const Icon(Icons.star,
-                                        color: Colors.orange),
+                                        color: Colors.black, size: 20),
                                     const SizedBox(width: 8),
                                     Text.rich(
                                       TextSpan(

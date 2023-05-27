@@ -21,8 +21,8 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 25),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: const Color.fromARGB(255, 127, 0, 255),
-                onPrimary: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 127, 0, 255),
+                foregroundColor: Colors.white,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
