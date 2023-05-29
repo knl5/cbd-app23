@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
-import '../fonctionnalities/review_strain.dart';
-import '../fonctionnalities/stripe_checkout.dart';
-import '../fonctionnalities/form_review.dart';
+import '../functionalities/review_strain.dart';
+import '../functionalities/stripe_checkout.dart';
+import '../functionalities/form_review.dart';
 
 class DetailsStrain extends StatefulWidget {
   final DataStrains data;
