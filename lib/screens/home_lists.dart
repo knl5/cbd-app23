@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/data/flowers_data.dart';
+import 'package:my_app/functionalities/blog_articles.dart';
 import 'package:my_app/functionalities/recommendation_list.dart';
 
 class HomeLists extends StatelessWidget {
@@ -63,7 +64,8 @@ class HomeLists extends StatelessWidget {
               ),
             ),
           ),
-          const Expanded(
+          const SizedBox(
+            height: 350.0,
             child: FlowerList(),
           ),
           const SizedBox(height: 40),
@@ -151,7 +153,24 @@ class HomeLists extends StatelessWidget {
             height: 350.0,
             child: RecoList(difficulty: 'Easy'),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
+          const Padding(
+            padding: EdgeInsets.only(left: 30, bottom: 20),
+            child: Text(
+              '📰 Latest articles',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SourceSansPro',
+                color: Color.fromARGB(255, 108, 142, 71),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 350.0,
+            width: 500,
+            child: ArticleElement(),
+          )
         ],
       ),
     );
