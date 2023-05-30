@@ -55,9 +55,10 @@ class _StrainsPageState extends State<StrainsPage> {
                                           DetailsStrain(data: data[index])));
                             },
                             child: Card(
-                                elevation: 2,
-                                margin: const EdgeInsets.all(20),
-                                color: const Color.fromARGB(255, 239, 239, 238),
+                                elevation: 3,
+                                margin: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 15),
+                                color: const Color(0xfff8f8f8),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Padding(
@@ -140,6 +141,7 @@ class _StrainsPageState extends State<StrainsPage> {
   void _showFilterBottomSheet() {
     showModalBottomSheet(
       context: context,
+      elevation: 2,
       builder: (BuildContext context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -147,8 +149,10 @@ class _StrainsPageState extends State<StrainsPage> {
             const Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text('Filter by type of plant or by need',
-                  style:
-                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceSansPro')),
             ),
             ListTile(
               title: const Text('All'),

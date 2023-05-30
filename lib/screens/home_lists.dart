@@ -73,16 +73,15 @@ class HomeLists extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
             child: Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: const [
                     BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 8.0,
-                        spreadRadius: 1.0,
-                        offset: Offset(
-                          0, // Move to right 7.0 horizontally
-                          8.0, // Move to bottom 8.0 Vertically
-                        ))
+                      color: Color(0x3f000000),
+                      blurRadius: 4,
+                      offset: Offset(0, 4),
+                    ),
                   ],
+                  color: const Color(0xfff8f8f8),
                   image: const DecorationImage(
                     image: AssetImage('assets/images/hello-marijane.jpg'),
                     fit: BoxFit.cover,
@@ -90,7 +89,6 @@ class HomeLists extends StatelessWidget {
                         ColorFilter.mode(Colors.black26, BlendMode.darken),
                   ),
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 width: 200,
                 height: 200,

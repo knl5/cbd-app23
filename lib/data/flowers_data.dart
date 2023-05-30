@@ -31,19 +31,31 @@ class FlowerList extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        width: 200.0,
-                        height: 350.0,
+                        width: 180.0,
+                        height: 330.0,
                         margin: const EdgeInsets.only(left: 25.0),
                         child: Container(
-                          height: 350.0,
+                          height: 320.0,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: const Color.fromARGB(255, 239, 239, 238),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x3f000000),
+                                blurRadius: 4,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                            color: const Color(0xfff8f8f8),
+                          ),
+                          padding: const EdgeInsets.only(
+                            top: 25,
+                            bottom: 30,
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const SizedBox(height: 30),
+                              const SizedBox(height: 25),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image(
@@ -51,8 +63,8 @@ class FlowerList extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   colorBlendMode: BlendMode.dstATop,
                                   color: Colors.black.withOpacity(0.8),
-                                  width: 150,
-                                  height: 150,
+                                  width: 104,
+                                  height: 104,
                                 ),
                               ),
                               const SizedBox(height: 30),
@@ -72,7 +84,7 @@ class FlowerList extends StatelessWidget {
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'SourceSansPro'),
-                                  textAlign: TextAlign.left,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
