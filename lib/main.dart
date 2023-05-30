@@ -12,9 +12,11 @@ import 'package:my_app/screens/welcome_screen.dart';
 import 'firebase_options.dart';
 import 'authentication/auth_gate.dart';
 import 'screens/form_contribution.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

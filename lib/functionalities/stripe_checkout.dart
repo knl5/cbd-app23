@@ -5,8 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
-
-import '../secrets_key.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -223,10 +222,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'currency': currency,
         'payment_method_types[]': 'card'
       };
+      await dotenv.load(fileName: ".env");
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer $apistripe',
+          'Authorization': dotenv.env['APIKEY_STRIPE'].toString(),
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,
