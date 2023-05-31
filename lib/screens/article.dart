@@ -71,6 +71,7 @@ class ArticlePage extends StatelessWidget {
                   SizedBox(
                     width: 350,
                     child: Text(
+                      // ignore: prefer_interpolation_to_compose_strings
                       'Created ' + article['created_at'],
                       style: const TextStyle(
                         fontSize: 16,

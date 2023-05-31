@@ -209,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list, color: Colors.black),
-            label: 'Strains',
+            label: 'Varieties',
             activeIcon: Icon(Icons.list_rounded,
                 color: Color.fromARGB(255, 127, 0, 255), size: 30),
           ),
