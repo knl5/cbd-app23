@@ -1,6 +1,7 @@
 # Marijane CBD App
 
-![logo-app](https://github.com/knl5/cbd-app23/blob/6b38990aa2f240f5b9d1dd82986ad8ed21d0e864/assets/images/Marijane.png)
+![happyMarijane](https://github.com/knl5/cbd-app23/assets/72729337/d1d16015-d8d8-47fe-b74b-91498f9cbea8)
+
 
 School project to validate my degree. Creation of a mobile application with Flutter and Firebase.
 This an app to inform but above all generalize, popularized CBD (cannabidiol) and its consumption.
