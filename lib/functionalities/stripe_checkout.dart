@@ -222,11 +222,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
         'currency': currency,
         'payment_method_types[]': 'card'
       };
-      await dotenv.load(fileName: ".env");
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': dotenv.env['APIKEY_STRIPE'].toString(),
+          "Authorization": 'Bearer ${dotenv.env['API_STRIPE']}',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,

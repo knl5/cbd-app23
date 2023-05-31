@@ -18,7 +18,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             const Image(image: AssetImage('assets/images/Marijane.png')),
-            const SizedBox(height: 25),
+            const SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 127, 0, 255),

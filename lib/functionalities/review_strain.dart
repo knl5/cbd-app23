@@ -134,20 +134,27 @@ class ReviewStrain extends StatelessWidget {
                                     Text(review.rating.toString()),
                                     const Icon(Icons.star,
                                         color: Colors.black, size: 20),
-                                    const SizedBox(width: 8),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: ' " ',
-                                        children: [
-                                          TextSpan(
-                                            text: review.text,
-                                          ),
-                                          const TextSpan(
-                                            text: ' " ',
-                                          ),
-                                        ],
+                                    const SizedBox(width: 12),
+                                    SizedBox(
+                                      width: 250,
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: ' " ',
+                                          children: [
+                                            TextSpan(
+                                              text: review.text,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const TextSpan(
+                                              text: ' " ',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ],

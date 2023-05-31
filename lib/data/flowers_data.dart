@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_app/screens/flower_details.dart';
 
 final contributionList = FirebaseFirestore.instance;
 Future<QuerySnapshot> flowers = contributionList.collection('flowers').get();
@@ -77,6 +78,7 @@ class FlowerList extends StatelessWidget {
                                   color: Color.fromARGB(255, 127, 0, 255),
                                 ),
                               ),
+                              
                               Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
@@ -101,91 +103,6 @@ class FlowerList extends StatelessWidget {
         }
         return const CircularProgressIndicator();
       },
-    );
-  }
-}
-
-class FlowerDetailsPage extends StatelessWidget {
-  final DocumentSnapshot flower;
-
-  const FlowerDetailsPage({required this.flower, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          flower['name'],
-          style: GoogleFonts.comfortaa(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  height: 350,
-                  width: double.infinity,
-                  child: Image(
-                    image: NetworkImage(flower['image_url'] ?? 'None'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              transform: Matrix4.translationValues(0, -25, 0),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      flower['name'],
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'SourceSansPro',
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: const [
-                        Text('THC '),
-                        Text('< 0.2%'),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Goods Effects:',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      flower['benefits'],
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
