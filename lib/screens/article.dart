@@ -27,7 +27,7 @@ class ArticlePage extends StatelessWidget {
                         ))
                   ],
                   image: DecorationImage(
-                    image: AssetImage('assets/images/background-cbd.jpg'),
+                    image: AssetImage('assets/images/cbd-picture.jpeg'),
                     fit: BoxFit.cover,
                     colorFilter:
                         ColorFilter.mode(Colors.black26, BlendMode.darken),

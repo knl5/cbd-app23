@@ -109,7 +109,7 @@ class ReviewStrain extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final review = reviews[index];
                     return Card(
-                      margin: const EdgeInsets.all(2),
+                      margin: const EdgeInsets.only(bottom: 20),
                       color: const Color.fromARGB(255, 239, 239, 238),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
