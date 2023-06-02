@@ -5,7 +5,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_app/screens/favorites_strains.dart';
-import 'package:my_app/functionalities/search_strain.dart';
+import 'package:my_app/features/search_strain.dart';
 import 'package:my_app/screens/home_lists.dart';
 import 'package:my_app/screens/list_strains.dart';
 import 'package:my_app/screens/welcome_screen.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/data/api_data.dart';
-import 'package:my_app/functionalities/review_strain.dart';
+import 'package:my_app/features/review_strain.dart';
 
 class FormReview extends StatefulWidget {
   final DataStrains data;

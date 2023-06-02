@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/data/flowers_data.dart';
-import 'package:my_app/functionalities/blog_articles.dart';
-import 'package:my_app/functionalities/recommendation_list.dart';
+import 'package:my_app/features/blog_articles.dart';
+import 'package:my_app/features/recommendation_list.dart';
 
 class HomeLists extends StatelessWidget {
   const HomeLists({Key? key}) : super(key: key);
