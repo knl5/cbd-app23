@@ -8,8 +8,8 @@ import 'package:image_picker/image_picker.dart';
 final CollectionReference flowersCollection =
     FirebaseFirestore.instance.collection('flowers');
 
-Future<void> addFlowerToFirestore(
-    String name, String type, String benefits, File image) async {
+Future<void> addFlowerToFirestore(String name, String type, String benefits,
+    String review, File image) async {
   // Upload the image to Firebase Storage
   final Reference storageRef = FirebaseStorage.instance
       .ref()
@@ -22,6 +22,7 @@ Future<void> addFlowerToFirestore(
     'name': name,
     'type': type,
     'benefits': benefits,
+    'review': review,
     'image_url': await downloadUrl.ref.getDownloadURL(),
     'created_at': FieldValue.serverTimestamp(),
   });
@@ -40,6 +41,7 @@ class _FlowerFormState extends State<FlowerForm> {
   final _nameController = TextEditingController();
   final _typeController = TextEditingController();
   final _benefitsController = TextEditingController();
+  final _reviewController = TextEditingController();
   File? _image;
 
   Future<void> _selectImage() async {
@@ -94,7 +96,10 @@ class _FlowerFormState extends State<FlowerForm> {
             children: [
               const Text('Add a new flower/product',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'SourceSansPro')),
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceSansPro')),
               const SizedBox(height: 18),
               GestureDetector(
                 onTap: _selectImage,
@@ -154,6 +159,15 @@ class _FlowerFormState extends State<FlowerForm> {
                   }
                   return null;
                 },
+                maxLines: 2,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _reviewController,
+                decoration: const InputDecoration(
+                  labelText: 'Review, something you want to share ?',
+                  border: OutlineInputBorder(),
+                ),
                 maxLines: 3,
               ),
               const SizedBox(height: 16),
@@ -164,6 +178,7 @@ class _FlowerFormState extends State<FlowerForm> {
                       _nameController.text,
                       _typeController.text,
                       _benefitsController.text,
+                      _reviewController.text,
                       _image!,
                     );
                     showDialog(
@@ -179,6 +194,7 @@ class _FlowerFormState extends State<FlowerForm> {
                                 _nameController.clear();
                                 _typeController.clear();
                                 _benefitsController.clear();
+                                _reviewController.clear();
                                 setState(() {
                                   _image = null;
                                 });

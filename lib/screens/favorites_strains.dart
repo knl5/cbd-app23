@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_app/data/api_data.dart';
+import 'package:my_app/data/models_data.dart';
 
-import 'details_strain.dart';
+import 'strain_details.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);

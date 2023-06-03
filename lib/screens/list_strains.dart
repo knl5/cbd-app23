@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../data/api_data.dart';
-import '../data/fetch_data.dart';
-import 'details_strain.dart';
+import '../data/models_data.dart';
+import '../data/strains_data.dart';
+import 'strain_details.dart';
 
 class StrainsPage extends StatefulWidget {
   const StrainsPage({super.key, required this.title});

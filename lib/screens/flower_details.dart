@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/screens/details_strain.dart';
+import 'package:my_app/screens/strain_details.dart';
 
 class FlowerDetailsPage extends StatelessWidget {
   final DocumentSnapshot flower;
@@ -131,6 +131,27 @@ class FlowerDetailsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
+                    Visibility(
+                      visible: flower['review'] != "",
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Review from contributor:',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            flower['review'],
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

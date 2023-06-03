@@ -149,7 +149,7 @@ class HomeLists extends StatelessWidget {
           ),
           const SizedBox(
             height: 350.0,
-            child: RecoList(difficulty: 'Easy'),
+            child: RecommendationList(difficulty: 'Easy'),
           ),
           const SizedBox(height: 30),
           const Padding(

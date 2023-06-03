@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../data/api_data.dart';
-import '../data/fetch_data.dart';
-import '../screens/details_strain.dart';
+import '../data/models_data.dart';
+import '../data/strains_data.dart';
+import '../screens/strain_details.dart';
 
 class MySearchDelegate extends SearchDelegate {
   @override

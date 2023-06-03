@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'api_data.dart';
+import 'models_data.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<DataStrains>> fetchData() async {
@@ -19,7 +19,7 @@ Future<List<DataStrains>> fetchData() async {
   }
 }
 
-// for homelist
+// for homelist, to not have api call restriction
 Future<List<DataStrains>> fetchDataFiltered(String difficulty) async {
   var url =
       Uri.parse('https://weed-strain1.p.rapidapi.com/?difficulty=$difficulty');

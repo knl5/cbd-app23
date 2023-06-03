@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/data/api_data.dart';
-import 'package:my_app/data/fetch_data.dart';
-import 'package:my_app/screens/details_strain.dart';
+import 'package:my_app/data/models_data.dart';
+import 'package:my_app/data/strains_data.dart';
+import 'package:my_app/screens/strain_details.dart';
 
-class RecoList extends StatefulWidget {
+class RecommendationList extends StatefulWidget {
   final String difficulty;
-  const RecoList({super.key, required this.difficulty});
+  const RecommendationList({super.key, required this.difficulty});
 
   @override
   // ignore: library_private_types_in_public_api
   _RecoListState createState() => _RecoListState();
 }
 
-class _RecoListState extends State<RecoList> {
+class _RecoListState extends State<RecommendationList> {
   List<DataStrains> data = [];
 
   @override
@@ -86,7 +86,7 @@ class _RecoListState extends State<RecoList> {
                             height: 104,
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 25),
                         Text(
                           data[index].strain,
                           style: const TextStyle(
@@ -97,7 +97,7 @@ class _RecoListState extends State<RecoList> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(8),
                           child: Text(
                             data[index].goodEffects,
                             style: const TextStyle(
