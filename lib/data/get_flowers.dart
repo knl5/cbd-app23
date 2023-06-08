@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/screens/flower_details.dart';
 
 final contributionList = FirebaseFirestore.instance;
@@ -78,7 +77,6 @@ class FlowerList extends StatelessWidget {
                                   color: Color.fromARGB(255, 127, 0, 255),
                                 ),
                               ),
-                              
                               Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(

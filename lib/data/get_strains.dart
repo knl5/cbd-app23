@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'models_data.dart';
+import 'strain_model.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<DataStrains>> fetchData() async {

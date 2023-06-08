@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_app/data/models_data.dart';
+import 'package:my_app/data/strain_model.dart';
 
 class Review {
   final String userId;

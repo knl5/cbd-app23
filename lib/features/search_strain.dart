@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../data/models_data.dart';
-import '../data/strains_data.dart';
+import '../data/strain_model.dart';
+import '../data/get_strains.dart';
 import '../screens/strain_details.dart';
 
 class MySearchDelegate extends SearchDelegate {

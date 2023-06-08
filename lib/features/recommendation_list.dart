@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/data/models_data.dart';
-import 'package:my_app/data/strains_data.dart';
+import 'package:my_app/data/strain_model.dart';
+import 'package:my_app/data/get_strains.dart';
 import 'package:my_app/screens/strain_details.dart';
 
 class RecommendationList extends StatefulWidget {
