@@ -1,6 +1,6 @@
 # Marijane CBD App
 
-![happyMarijane](https://github.com/knl5/cbd-app23/assets/72729337/d1d16015-d8d8-47fe-b74b-91498f9cbea8)
+![happyMarijane](/assets/images/Marijane.png)
 
 
 School project to validate my degree. Creation of a mobile application with Flutter and Firebase.
@@ -69,9 +69,9 @@ In `ios/Runner` folder add your `GoogleService-Info.plist`.
 ##### Check out Flutter’s online [documentation](http://flutter.io/) for help getting start with your Flutter project.
 ##### Project2023-ECVDigital   
 
-<img width="367" alt="screenshot" src="https://github.com/knl5/cbd-app23/assets/72729337/32826eff-8805-4888-adfd-b1facfba0667">
-<img width="367" alt="screenshot2" src="https://github.com/knl5/cbd-app23/assets/72729337/e601d1b6-1e81-40b0-994d-59a6038f5bae">
-<img width="367" alt="screenshot3" src="https://github.com/knl5/cbd-app23/assets/72729337/556bf766-91cd-44ef-b6cf-d30b9a1d2cd8">
+<img width="367" alt="screenshot" src="/assets/images/captureWelcome.png">
+<img width="367" alt="screenshot2" src="assets/images/captureHome.png">
+<img width="367" alt="screenshot3" src="/assets/images/captureDetails.png">
 
 
 
